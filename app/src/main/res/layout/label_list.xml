@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--xmlns:tools="http://schemas.android.com/tools"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="?android:attr/selectableItemBackground"-->
+                <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+    <!--&gt;-->
+
+
+<!--<LinearLayout-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:src="@drawable/ic_delete_black_24dp"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_list_title_text_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="4dp"-->
+            <!--android:textStyle="bold"-->
+            <!--tools:text="Item title" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_list_id_text_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/item_list_title_text_view"-->
+            <!--android:padding="4dp"-->
+            <!--tools:text="Item Id" />-->
+    <!--</LinearLayout>-->
+    <!---->
+<!--</LinearLayout>-->
+
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_margin="6dp"
+    android:background="@drawable/card_view_effect"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_list_title_text_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--tools:text="Item title"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/item_list_title_text_view2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--tools:text="Item title"/>-->
+
+        <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_delete_black_24dp"
+        />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/label_list_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    tools:text="Item title"/>
+
+                <TextView
+                    android:id="@+id/label_list_id_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    tools:text="Item Id"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+<!--</RelativeLayout>-->
