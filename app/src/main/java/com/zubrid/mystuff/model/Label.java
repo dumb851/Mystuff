@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Label implements Serializable {
 
-    //!another some text
+    //!another some text, text
     private UUID mId;
     private String mTitle;
     private boolean mIsSeparator;
