@@ -110,11 +110,11 @@ public class ItemLabelsLab {
 
     public void deleteLabelFromItem(Label label, Item item) {
 
-        //TODO
+        //!TODO
         String uuidString = label.getId().toString();
 
-        mDatabase.delete(DbSchemas.ItemLabelsTable.NAME, DbSchemas.ItemLabelsTable.Cols.UUID + " = ?",
-                new String[]{uuidString});
+//!        mDatabase.delete(DbSchemas.ItemLabelsTable.NAME, DbSchemas.ItemLabelsTable.Cols.UUID + " = ?",
+//                new String[]{uuidString});
 
     }
 
@@ -150,16 +150,16 @@ public class ItemLabelsLab {
 
     public void updateLabel(Label label) {
 
-        String uuidString = label.getId().toString();
-        ContentValues values = getContentValues(label);
-
-        int result;
-
-        result = mDatabase.update(DbSchemas.ItemLabelsTable.NAME, values,
-                DbSchemas.ItemLabelsTable.Cols.UUID + " = ?",
-                new String[]{uuidString}
-        );
-
-        Log.i(TAG, "update result= " + result);
+//!        String uuidString = label.getId().toString();
+//        ContentValues values = getContentValues(label);
+//
+//        int result;
+//
+//        result = mDatabase.update(DbSchemas.ItemLabelsTable.NAME, values,
+//                DbSchemas.ItemLabelsTable.Cols.UUID + " = ?",
+//                new String[]{uuidString}
+//        );
+//
+//        Log.i(TAG, "update result= " + result);
     }
 }
