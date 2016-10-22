@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
@@ -13,7 +12,6 @@ import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
 public class ItemLabelsLab {
@@ -39,38 +37,24 @@ public class ItemLabelsLab {
         return sItemLabelsLab;
     }
 
-    public ArrayList<Label> getLabels() {
+    public ArrayList<Label> getLabelsByItem(Item item) {
 
         int orderNumber = 0;
 
         ArrayList<Label> labels = new ArrayList<>();
-        LabelsCursorWrapper cursor = queryLabels(null, null);
-        String firstLetterOfLastLabel  = "";
+        String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
+
+        String[] whereArgs = {item.getId().toString()};
+
+        //! TODO here нужен свой CursorWrapper, сейчас тут падает.
+        LabelsCursorWrapper cursor = queryLabels(whereClause, whereArgs);
+
 
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
-                String firstLetter = "";
-
                 Label label = cursor.getLabel();
-
-                String title = label.getTitle();
-                title = (title == null) ? "" : title;
-
-                if (title.length() > 0) {
-                    firstLetter = String.valueOf(title.charAt(0));
-                }
-
-                if (!firstLetter.equalsIgnoreCase(firstLetterOfLastLabel)) {
-                    Label separator = new Label();
-                    separator.setTitle(firstLetter.toUpperCase());
-                    separator.setIsSeparator(true);
-                    separator.setOrderNumber(orderNumber++);
-
-                    labels.add(separator);
-                    firstLetterOfLastLabel = firstLetter;
-                }
 
                 label.setOrderNumber(orderNumber++);
                 labels.add(label);
@@ -104,17 +88,20 @@ public class ItemLabelsLab {
 
     public void addLabelToItem(Label label, Item item) {
 
-        ContentValues values = getContentValues(label, item); //TODO here
+        ContentValues values = getContentValues(label, item);
         mDatabase.insert(DbSchemas.ItemLabelsTable.NAME, null, values);
     }
 
     public void deleteLabelFromItem(Label label, Item item) {
 
-        //!TODO
-        String uuidString = label.getId().toString();
+        String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_LABEL + " = ? AND "
+                + DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
 
-//!        mDatabase.delete(DbSchemas.ItemLabelsTable.NAME, DbSchemas.ItemLabelsTable.Cols.UUID + " = ?",
-//                new String[]{uuidString});
+        String uuidLabel = label.getId().toString();
+        String uuidItem = item.getId().toString();
+
+        mDatabase.delete(DbSchemas.ItemLabelsTable.NAME, whereClause,
+                new String[]{uuidLabel, uuidItem});
 
     }
 
@@ -129,23 +116,24 @@ public class ItemLabelsLab {
 
     public Label getLabel(UUID id) {
 
-        LabelsCursorWrapper cursor = queryLabels(
-                DbSchemas.ItemLabelsTable.Cols.UUID + " =?",
-                new String[]{id.toString()}
-        );
+//!        LabelsCursorWrapper cursor = queryLabels(
+//                DbSchemas.ItemLabelsTable.Cols.UUID + " =?",
+//                new String[]{id.toString()}
+//        );
+//
+//        try {
+//            if (cursor.getCount() == 0) {
+//                return null;
+//            }
+//
+//            cursor.moveToFirst();
+//            return cursor.getLabel();
+//
+//        } finally {
+//            cursor.close();
+//        }
 
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-
-            cursor.moveToFirst();
-            return cursor.getLabel();
-
-        } finally {
-            cursor.close();
-        }
-
+        return null;
     }
 
     public void updateLabel(Label label) {

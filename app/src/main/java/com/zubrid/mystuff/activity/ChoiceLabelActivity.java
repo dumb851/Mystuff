@@ -3,19 +3,18 @@ package com.zubrid.mystuff.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.zubrid.mystuff.fragment.ChoiceLabelFragment;
-import com.zubrid.mystuff.fragment.ItemFragment;
+import com.zubrid.mystuff.model.Item;
 
 public class ChoiceLabelActivity extends SingleFragmentActivity{
 
     private ChoiceLabelFragment mFragment;
 
-    public static Intent newIntent(Context packageContext) {
+    public static Intent newIntent(Context packageContext, Item item) {
         Intent intent = new Intent(packageContext, ChoiceLabelActivity.class);
-        //intent.putExtra(ItemFragment.EXTRA_ITEM_ID, itemId);
+        intent.putExtra(ChoiceLabelFragment.EXTRA_ITEM_ID, item.getId());
         return intent;
     }
 

@@ -117,8 +117,7 @@ public class ItemFragment extends Fragment {
 //                DialogFragment selectLabelDialog = new SelectLabelDialogFragment();
 //                selectLabelDialog.show(getFragmentManager(), "SelectLabelDialog");
 
-                Intent intent = ChoiceLabelActivity.newIntent(getContext());
-
+                Intent intent = ChoiceLabelActivity.newIntent(getContext(), mItem);
                 startActivityForResult(intent, INTENT_CHOICE_LABEL);
 
             }
@@ -153,7 +152,6 @@ public class ItemFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
-        int r = 5;
 
         if (requestCode == INTENT_CHOICE_LABEL) {
             ArrayList<ChoiceItem> changedItems = (ArrayList<ChoiceItem>) data.getSerializableExtra("changedItems");

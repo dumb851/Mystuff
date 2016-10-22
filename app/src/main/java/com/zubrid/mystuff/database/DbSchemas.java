@@ -33,7 +33,8 @@ public class DbSchemas {
 
             public static final String UUID_ITEM   = "uuid_item";
             public static final String UUID_LABEL  = "uuid_label";
-            public static final String UUID  = "uuid_label"; //! что бы не падало
+            //public static final String UUID  = "uuid_label"; //! что бы не падало
+
         }
     }
 }

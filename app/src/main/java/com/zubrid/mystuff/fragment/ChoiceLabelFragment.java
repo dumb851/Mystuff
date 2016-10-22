@@ -1,16 +1,16 @@
 package com.zubrid.mystuff.fragment;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,25 +21,44 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.zubrid.mystuff.R;
+import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
+import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ChoiceLabelFragment extends Fragment{
 
+    public static final String EXTRA_ITEM_ID = "mystuff.ITEM_ID";
     private Adapter mAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<ChoiceItem> mAllLabels = new ArrayList<>();
     private ArrayList<ChoiceItem> mChangedLabels = new ArrayList<>();
+    private Item mItem;
 
     public static ChoiceLabelFragment newInstance() {
-        Bundle args = new Bundle();
+//        Bundle args = new Bundle();
+//        args.putSerializable(EXTRA_ITEM_ID, itemId);
 
         ChoiceLabelFragment fragment = new ChoiceLabelFragment();
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        Intent intent = getActivity().getIntent();
+        UUID itemId = (UUID) intent.getSerializableExtra(ChoiceLabelFragment.EXTRA_ITEM_ID);
+
+        mItem = ItemLab.get(getActivity()).getItem(itemId);
+
     }
 
     @Override
@@ -52,11 +71,18 @@ public class ChoiceLabelFragment extends Fragment{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter(getContext());
 
+
         mRecyclerView.setAdapter(mAdapter);
         ArrayList<Label> allLabels = LabelLab.get(getActivity()).getLabels(false);
+        ArrayList<Label> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
 
         for (Label label : allLabels) {
-            ChoiceItem<Label> choiceItem = new ChoiceItem<Label>(label, label.getTitle());
+
+            if (labelsByItem.contains(label)) {
+                Log.d("ChoiceLabelFragment", "contains: " + label.getTitle());
+            }
+
+            ChoiceItem<Label> choiceItem = new ChoiceItem<>(label, label.getTitle());
             mAllLabels.add(choiceItem);
         }
 
@@ -84,7 +110,7 @@ public class ChoiceLabelFragment extends Fragment{
     public ArrayList<ChoiceItem> getChangedLabels() {
 
         return mChangedLabels;
-    };
+    }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
             implements Filterable {

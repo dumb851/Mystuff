@@ -14,6 +14,12 @@ public class ChoiceItem<T> implements Serializable{
         mTitle = title;
     }
 
+    public ChoiceItem(T item, String title, boolean checked) {
+        mItem = item;
+        mChecked = checked;
+        mTitle = title;
+    }
+
     public T getItem() {
         return mItem;
     }
