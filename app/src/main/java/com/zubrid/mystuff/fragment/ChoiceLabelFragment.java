@@ -75,7 +75,7 @@ public class ChoiceLabelFragment extends Fragment {
 
         ArrayList<Label> allLabels = LabelLab.get(getActivity()).getLabels(false);
         ArrayList<ItemLabel> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
-
+        //TODO here чет пусто, не сохраняются леблы
         ArrayList<UUID> checkedLabelsUUID = new ArrayList<>();
 
         for (ItemLabel itemLabel : labelsByItem) {
