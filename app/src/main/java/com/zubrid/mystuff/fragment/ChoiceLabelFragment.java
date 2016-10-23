@@ -26,12 +26,13 @@ import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
 import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class ChoiceLabelFragment extends Fragment{
+public class ChoiceLabelFragment extends Fragment {
 
     public static final String EXTRA_ITEM_ID = "mystuff.ITEM_ID";
     private Adapter mAdapter;
@@ -44,9 +45,9 @@ public class ChoiceLabelFragment extends Fragment{
 //        Bundle args = new Bundle();
 //        args.putSerializable(EXTRA_ITEM_ID, itemId);
 
-        ChoiceLabelFragment fragment = new ChoiceLabelFragment();
+        //ChoiceLabelFragment fragment = new ChoiceLabelFragment();
 //        fragment.setArguments(args);
-        return fragment;
+        return new ChoiceLabelFragment();
     }
 
     @Override
@@ -62,23 +63,28 @@ public class ChoiceLabelFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container,
-                              Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.choice_label_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.choice_label_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter(getContext());
-
-
         mRecyclerView.setAdapter(mAdapter);
+
         ArrayList<Label> allLabels = LabelLab.get(getActivity()).getLabels(false);
-        ArrayList<Label> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
+        ArrayList<ItemLabel> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
+
+        ArrayList<UUID> checkedLabelsUUID = new ArrayList<>();
+
+        for (ItemLabel itemLabel : labelsByItem) {
+            checkedLabelsUUID.add(itemLabel.getLabelUUID());
+        }
 
         for (Label label : allLabels) {
 
-            if (labelsByItem.contains(label)) {
+            if (checkedLabelsUUID.contains(label.getId())) {
                 Log.d("ChoiceLabelFragment", "contains: " + label.getTitle());
             }
 
@@ -118,7 +124,7 @@ public class ChoiceLabelFragment extends Fragment{
         private LabelFilter mLabelFilter;
         private final ArrayList<ChoiceItem> mFilteredLabel;
 
-        public Adapter(Context context) {
+        Adapter(Context context) {
             mFilteredLabel = new ArrayList<>();
         }
 
@@ -146,7 +152,7 @@ public class ChoiceLabelFragment extends Fragment{
 
         @Override
         public Filter getFilter() {
-            if(mLabelFilter == null)
+            if (mLabelFilter == null)
                 mLabelFilter = new LabelFilter(this, mAllLabels);
             return mLabelFilter;
         }
@@ -157,7 +163,7 @@ public class ChoiceLabelFragment extends Fragment{
             private final ArrayList<ChoiceItem> mOriginalList;
             private final ArrayList<ChoiceItem> mFilteredList;
 
-            public LabelFilter(Adapter adapter, ArrayList<ChoiceItem> originalList) {
+            LabelFilter(Adapter adapter, ArrayList<ChoiceItem> originalList) {
                 mAdapter = adapter;
                 mOriginalList = originalList;
                 mFilteredList = new ArrayList<>();
@@ -198,7 +204,7 @@ public class ChoiceLabelFragment extends Fragment{
             private ChoiceItem mChoiceItem;
             private final CheckBox mCheckBox;
 
-            public ViewHolder(View itemView, int viewType) {
+            ViewHolder(View itemView, int viewType) {
                 super(itemView);
                 mCheckBox = (CheckBox) itemView.findViewById(R.id.choice_label_label_check_box);
 
@@ -217,7 +223,7 @@ public class ChoiceLabelFragment extends Fragment{
                 });
             }
 
-            public void bindItem(ChoiceItem choiceItem) {
+            void bindItem(ChoiceItem choiceItem) {
                 mChoiceItem = choiceItem;
                 mCheckBox.setText(choiceItem.getTitle());
                 mCheckBox.setChecked(choiceItem.isChecked());

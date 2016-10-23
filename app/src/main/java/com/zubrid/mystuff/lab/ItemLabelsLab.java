@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
-import com.zubrid.mystuff.database.LabelsCursorWrapper;
+import com.zubrid.mystuff.database.ItemLabelsCursorWrapper;
 import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
@@ -37,27 +38,26 @@ public class ItemLabelsLab {
         return sItemLabelsLab;
     }
 
-    public ArrayList<Label> getLabelsByItem(Item item) {
+    public ArrayList<ItemLabel> getLabelsByItem(Item item) {
 
         int orderNumber = 0;
 
-        ArrayList<Label> labels = new ArrayList<>();
+        ArrayList<ItemLabel> itemLabels = new ArrayList<>();
         String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
 
         String[] whereArgs = {item.getId().toString()};
 
         //! TODO here нужен свой CursorWrapper, сейчас тут падает.
-        LabelsCursorWrapper cursor = queryLabels(whereClause, whereArgs);
+        ItemLabelsCursorWrapper cursor = queryLabels(whereClause, whereArgs);
 
 
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
-                Label label = cursor.getLabel();
+                ItemLabel itemLabel = cursor.getItemWithLabel();
 
-                label.setOrderNumber(orderNumber++);
-                labels.add(label);
+                itemLabels.add(itemLabel);
 
                 cursor.moveToNext();
             }
@@ -66,10 +66,10 @@ public class ItemLabelsLab {
             cursor.close();
         }
 
-        return labels;
+        return itemLabels;
     }
 
-    private LabelsCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
+    private ItemLabelsCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
 
         //!String orderBy = DbSchemas.ItemLabelsTable.Cols.TITLE;
 
@@ -83,7 +83,7 @@ public class ItemLabelsLab {
                 ""//!orderBy
         );
 
-        return new LabelsCursorWrapper(cursor);
+        return new ItemLabelsCursorWrapper(cursor);
     }
 
     public void addLabelToItem(Label label, Item item) {
