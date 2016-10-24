@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,12 +83,17 @@ public class ChoiceLabelFragment extends Fragment {
 
         for (Label label : allLabels) {
 
-            if (checkedLabelsUUID.contains(label.getId())) {
-                Log.d("ChoiceLabelFragment", "contains: " + label.getTitle());
+            if (checkedLabelsUUID.contains(label.getId())){
+
+                ChoiceItem<Label> choiceItem = new ChoiceItem<>(label, label.getTitle(), true);
+                mAllLabels.add(choiceItem);}
+
+            else{
+
+                ChoiceItem<Label> choiceItem = new ChoiceItem<>(label, label.getTitle());
+                mAllLabels.add(choiceItem);
             }
 
-            ChoiceItem<Label> choiceItem = new ChoiceItem<>(label, label.getTitle());
-            mAllLabels.add(choiceItem);
         }
 
         mAdapter.getFilter().filter("");

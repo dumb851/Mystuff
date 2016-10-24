@@ -47,7 +47,6 @@ public class ItemLabelsLab {
 
         String[] whereArgs = {item.getId().toString()};
 
-        //! TODO here нужен свой CursorWrapper, сейчас тут падает.
         ItemLabelsCursorWrapper cursor = queryLabels(whereClause, whereArgs);
 
 
@@ -72,7 +71,7 @@ public class ItemLabelsLab {
     private ItemLabelsCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
 
         //!String orderBy = DbSchemas.ItemLabelsTable.Cols.TITLE;
-
+        //!whereClause = "";
         Cursor cursor = mDatabase.query(
                 DbSchemas.ItemLabelsTable.NAME,
                 null,
