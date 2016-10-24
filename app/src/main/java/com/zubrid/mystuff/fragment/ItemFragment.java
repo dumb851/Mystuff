@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,11 +67,13 @@ public class ItemFragment extends Fragment {
         if (itemId == null) {
             mItem = new Item();
             mIsNewItem = true;
+            getMyActionBar().setSubtitle("new item //!"); //TODO here make normal R.string
         } else {
             mItem = ItemLab.get(getActivity()).getItem(itemId);
             if (mItem == null) {
                 mItem = new Item(itemId);
                 mIsNewItem = true;
+                getMyActionBar().setSubtitle("NewNewNew //!");
             }
         }
     }
@@ -201,4 +205,7 @@ public class ItemFragment extends Fragment {
         Log.i("setLastSaved", mItem.getLastSavedDate().toString());
     }
 
+    protected ActionBar getMyActionBar() {
+        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+    }
 }
