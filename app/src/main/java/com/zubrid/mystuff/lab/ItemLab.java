@@ -53,8 +53,6 @@ public class ItemLab {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
-
-
                 String firstLetter = "";
 
                 Item item = cursor.getItem();
@@ -79,6 +77,32 @@ public class ItemLab {
                 item.setOrderNumber(orderNumber++);
                 items.add(item);
 
+
+                cursor.moveToNext();
+
+            }
+
+        } finally {
+            cursor.close();
+        }
+
+        return items;
+    }
+
+    public ArrayList<Item> getWithoutSeparatorsItems() {
+
+        int orderNumber = 0;
+
+        ArrayList<Item> items = new ArrayList<>();
+        ItemsCursorWrapper cursor = queryItems(null, null);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                Item item = cursor.getItem();
+                item.setOrderNumber(orderNumber++);
+                items.add(item);
 
                 cursor.moveToNext();
 

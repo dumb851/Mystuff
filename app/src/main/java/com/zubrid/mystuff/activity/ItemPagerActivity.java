@@ -51,11 +51,12 @@ public class ItemPagerActivity extends AppCompatActivity {
         }
         setContentView(mViewPager);
 
+        //TODO here убрать сепараторы
         if (itemId == null) {
             items = new ArrayList<>();
             items.add(new Item());
         } else {
-            items = ItemLab.get(this).getItems();
+            items = ItemLab.get(this).getWithoutSeparatorsItems();
         }
 
         FragmentManager fm = getSupportFragmentManager();

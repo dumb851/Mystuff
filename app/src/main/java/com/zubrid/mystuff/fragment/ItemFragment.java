@@ -67,13 +67,11 @@ public class ItemFragment extends Fragment {
         if (itemId == null) {
             mItem = new Item();
             mIsNewItem = true;
-            getMyActionBar().setSubtitle("new item //!"); //TODO here make normal R.string
         } else {
             mItem = ItemLab.get(getActivity()).getItem(itemId);
             if (mItem == null) {
                 mItem = new Item(itemId);
                 mIsNewItem = true;
-                getMyActionBar().setSubtitle("NewNewNew //!");
             }
         }
     }
@@ -127,8 +125,18 @@ public class ItemFragment extends Fragment {
             }
         });
 
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mIsNewItem) {
+            getMyActionBar().setSubtitle(R.string.subtitle_new_item);
+        } else {
+            getMyActionBar().setSubtitle(R.string.subtitle_item);
+        }
     }
 
     @Override
