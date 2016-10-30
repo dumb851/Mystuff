@@ -21,8 +21,12 @@ import com.zubrid.mystuff.model.Item;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class ItemPagerActivity extends AppCompatActivity {
+public class ItemPagerActivity extends AppCompatActivity
+    implements ItemFragment.ItemFragmentListener{
+
     ViewPager mViewPager;
+    FragmentStatePagerAdapter mPagerAdapter;
+    ArrayList<Item> mItems;
 
     public static ActivityOptions getTransition(Activity activity, View crimeView) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -41,7 +45,6 @@ public class ItemPagerActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ArrayList<Item> items;
         UUID itemId = (UUID) getIntent().getSerializableExtra(ItemFragment.EXTRA_ITEM_ID);
 
         mViewPager = new ViewPager(this);
@@ -51,30 +54,31 @@ public class ItemPagerActivity extends AppCompatActivity {
         }
         setContentView(mViewPager);
 
-        //TODO here убрать сепараторы
         if (itemId == null) {
-            items = new ArrayList<>();
-            items.add(new Item());
+            mItems = new ArrayList<>();
+            mItems.add(new Item());
         } else {
-            items = ItemLab.get(this).getWithoutSeparatorsItems();
+            mItems = ItemLab.get(this).getWithoutSeparatorsItems();
         }
 
         FragmentManager fm = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
+        mPagerAdapter = new FragmentStatePagerAdapter(fm) {
             @Override
             public int getCount() {
-                return items.size();
+                return mItems.size();
             }
 
             @Override
             public Fragment getItem(int pos) {
-                UUID itemId = items.get(pos).getId();
+                UUID itemId = mItems.get(pos).getId();
                 return ItemFragment.newInstance(itemId);
             }
-        });
+        };
 
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getId().equals(itemId)) {
+        mViewPager.setAdapter(mPagerAdapter);
+
+        for (int i = 0; i < mItems.size(); i++) {
+            if (mItems.get(i).getId().equals(itemId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
@@ -87,6 +91,13 @@ public class ItemPagerActivity extends AppCompatActivity {
         return intent;
     }
 
+    //Callback
+
+    @Override
+    public void addPage() {
+        mItems.add(new Item());
+        mPagerAdapter.notifyDataSetChanged();
+    }
 }
 
 

@@ -52,4 +52,10 @@
         android:id="@+id/button_open_labels"
         android:layout_gravity="center_horizontal"/>
 
+    <Button
+        android:text="add page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_button_add_page"/>
+
 </LinearLayout>

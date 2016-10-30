@@ -1,6 +1,7 @@
 package com.zubrid.mystuff.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,6 +45,7 @@ public class ItemFragment extends Fragment {
     private Item mItem;
 
     private ArrayList<UUID> mChangedItems = new ArrayList<>();
+    private ItemFragmentListener mCallback;
 
     public static ItemFragment newInstance(UUID itemId) {
 
@@ -125,6 +127,15 @@ public class ItemFragment extends Fragment {
             }
         });
 
+        //TODO here: do add page and invoke when new item is saved
+        Button buttonAddPage = (Button) view.findViewById(R.id.item_button_add_page);
+        buttonAddPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.addPage();
+            }
+        });
+
         return view;
     }
 
@@ -170,13 +181,27 @@ public class ItemFragment extends Fragment {
 
             for (ChoiceItem changedItem: changedItems) {
                 if (changedItem.isChecked()) {
-                    //todo here
                     ItemLabelsLab.get(getContext()).addLabelToItem((Label)changedItem.getItem(), mItem);
                 } else {
                     ItemLabelsLab.get(getContext()).deleteLabelFromItem((Label)changedItem.getItem(), mItem);
                 }
 
             }
+        }
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        Activity activity = (Activity) context;
+
+        try {
+            mCallback = (ItemFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ItemFragmentListener");
         }
 
     }
@@ -215,5 +240,10 @@ public class ItemFragment extends Fragment {
 
     protected ActionBar getMyActionBar() {
         return ((AppCompatActivity) getActivity()).getSupportActionBar();
+    }
+
+    //CallBack
+    public interface ItemFragmentListener{
+        void addPage();
     }
 }
