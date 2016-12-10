@@ -386,9 +386,7 @@ public class ItemsListFragment extends Fragment {
             }
 
             selectItem(mItem);
-//                if (!mMultiSelector.tapSelection(this)) {
 
-            //}
         }
 
         //

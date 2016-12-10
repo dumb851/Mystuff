@@ -91,8 +91,8 @@ public class ItemPagerActivity extends AppCompatActivity
         return intent;
     }
 
-    //Callback
 
+    // Callback ItemFragment.ItemFragmentListener
     @Override
     public void addPage() {
         mItems.add(new Item());
@@ -101,56 +101,3 @@ public class ItemPagerActivity extends AppCompatActivity
 }
 
 
-//import android.content.Intent;
-//import android.os.Build;
-//import android.os.Bundle;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v7.app.AppCompatActivity;
-//import android.view.View;
-//
-//import com.zubrid.mystuff.R;
-//
-//public class ItemActivity extends AppCompatActivity {
-//
-//    private static final String EXTRA_ITEM_ID =
-//            "com.zubrid.mystuff.item_id";
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_fragment);
-//
-//        FragmentManager fm = getSupportFragmentManager();
-//        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-//
-//        if (fragment == null) {
-//            fragment = createFragment();
-//            fm.beginTransaction()
-//                    .add(R.id.fragment_container, fragment)
-//                    .commit();
-//        }
-//    }
-//    protected Fragment createFragment() {
-//
-//        UUID itemId = (UUID) getIntent()
-//                .getSerializableExtra(EXTRA_ITEM_ID);
-//
-//        return ItemFragment.newInstance(itemId);
-//    }
-//
-
-//
-//    public static ActivityOptions getTransition(Activity activity, View itemView) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            itemView.setTransitionName("item");
-//
-//            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
-//                    itemView, "item");
-//
-//            return options;
-//        } else {
-//            return null;
-//        }
-//    }
-//}

@@ -46,6 +46,8 @@ public class ItemFragment extends Fragment {
 
     private ArrayList<UUID> mChangedItems = new ArrayList<>();
     private ItemFragmentListener mCallback;
+    private boolean mPageAdded;
+    private boolean mCreatingNewItems;
 
     public static ItemFragment newInstance(UUID itemId) {
 
@@ -76,6 +78,10 @@ public class ItemFragment extends Fragment {
                 mIsNewItem = true;
             }
         }
+
+        if (mIsNewItem) {
+            mCreatingNewItems = true;
+        }
     }
 
     @Override
@@ -86,7 +92,8 @@ public class ItemFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.item, container, false);
 
@@ -95,6 +102,8 @@ public class ItemFragment extends Fragment {
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
             }
 
             @Override
@@ -132,7 +141,7 @@ public class ItemFragment extends Fragment {
         buttonAddPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCallback.addPage();
+                addPage();
             }
         });
 
@@ -213,15 +222,13 @@ public class ItemFragment extends Fragment {
             ItemLab.get(getActivity()).addItem(mItem);
             mIsNewItem = false;
 
-//            Intent intent = new Intent();
-//            intent.putExtra("itemId", mItem.getId());
-//            getActivity().setResult(Activity.RESULT_OK, intent);
-
         } else {
             ItemLab.get(getActivity()).updateItem(mItem);
 
-            //mCallbacks.onCrimeUpdated(mCrime);
-            //Log.i("updateItem", mItem.getTitle() + " / " + mItem.getId().toString());
+        }
+
+        if (mCreatingNewItems) {
+            addPage();
         }
 
         if (!mChangedItems.contains(mItem.getId())) {
@@ -236,6 +243,16 @@ public class ItemFragment extends Fragment {
         mItem = ItemLab.get(getActivity()).getItem(mItem.getId());
         mLastSaved.setText(mItem.getLastSavedDate().toString());
         Log.i("setLastSaved", mItem.getLastSavedDate().toString());
+    }
+
+    private void addPage() {
+
+        if (mPageAdded) {
+            return;
+        }
+
+        mPageAdded = true;
+        mCallback.addPage();
     }
 
     protected ActionBar getMyActionBar() {

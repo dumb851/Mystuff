@@ -16,4 +16,5 @@
     <string name="hint_description">Description</string>
     <string name="subtitle_new_item">New item</string>
     <string name="subtitle_item">Item</string>
+    <string name="subtitle_item_saved">Item saved</string>
 </resources>
