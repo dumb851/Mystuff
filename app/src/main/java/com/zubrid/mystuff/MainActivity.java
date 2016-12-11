@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.zubrid.mystuff.activity.ItemPagerActivity;
+import com.zubrid.mystuff.fragment.HomeFragment;
 import com.zubrid.mystuff.fragment.ItemsListFragment;
 import com.zubrid.mystuff.fragment.LabelsListFragment;
 
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setHomePage();
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -105,6 +109,11 @@ public class MainActivity extends AppCompatActivity
 
             getMyActionBar().setSubtitle(R.string.subtitle_items);
 
+
+        } else if (id == R.id.nav_home) {
+
+            setHomePage();
+
         } else if (id == R.id.nav_places) {
 
 
@@ -128,6 +137,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setHomePage() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment = HomeFragment.newInstance(null, null);
+
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        getMyActionBar().setSubtitle(R.string.subtitle_home);
     }
 
     protected ActionBar getMyActionBar() {

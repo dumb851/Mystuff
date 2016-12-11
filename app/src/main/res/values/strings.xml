@@ -17,4 +17,12 @@
     <string name="subtitle_new_item">New item</string>
     <string name="subtitle_item">Item</string>
     <string name="subtitle_item_saved">Item saved</string>
+    <string name="drawer_items">Items</string>
+    <string name="drawer_places">Places</string>
+    <string name="drawer_labels">Labels</string>
+    <string name="drawer_home">Home</string>
+    <string name="subtitle_home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
