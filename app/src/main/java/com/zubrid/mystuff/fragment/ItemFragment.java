@@ -43,7 +43,6 @@ public class ItemFragment extends Fragment {
     private TextView mIdView;
     private TextView mLastSaved;
     private boolean mIsNewItem = false;
-    //!private Intent mIntentResult;
     private Item mItem;
 
     private ArrayList<UUID> mChangedItems = new ArrayList<>();

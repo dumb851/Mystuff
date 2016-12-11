@@ -13,9 +13,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.fragment.ItemFragment;
+import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.model.Item;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.UUID;
 public class ItemPagerActivity extends AppCompatActivity
     implements ItemFragment.ItemFragmentListener{
 
+    private static final String TAG = "ItemPagerActivity_TAG";
     ViewPager mViewPager;
     FragmentStatePagerAdapter mPagerAdapter;
     ArrayList<Item> mItems;
@@ -73,6 +74,8 @@ public class ItemPagerActivity extends AppCompatActivity
                 UUID itemId = mItems.get(pos).getId();
                 return ItemFragment.newInstance(itemId);
             }
+
+
         };
 
         mViewPager.setAdapter(mPagerAdapter);
