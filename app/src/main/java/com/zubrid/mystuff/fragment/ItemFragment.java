@@ -36,6 +36,8 @@ public class ItemFragment extends Fragment {
 
     public static final String EXTRA_ITEM_ID = "mystuff.ITEM_ID";
     public static final int INTENT_CHOICE_LABEL = 1;
+    private static final String TAG = "ItemFragment_TAG";
+
 
     private EditText mTitleField;
     private TextView mIdView;
@@ -136,7 +138,6 @@ public class ItemFragment extends Fragment {
             }
         });
 
-        //TODO here: do add page and invoke when new item is saved
         Button buttonAddPage = (Button) view.findViewById(R.id.item_button_add_page);
         buttonAddPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +163,15 @@ public class ItemFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if (item.getItemId() == android.R.id.home) {
+            Log.i(TAG, "onOptionsItemSelected: home");
+        }
+
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
 
             case R.id.menu_item_delete:
 
