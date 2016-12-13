@@ -140,7 +140,13 @@ public class ItemLab {
 
     public void deleteItem(Item item) {
 
-        String uuidString = item.getId().toString();
+        deleteItemByUUID(item.getId());
+
+    }
+
+    public void deleteItemByUUID(UUID uuid) {
+
+        String uuidString = uuid.toString();
 
         mDatabase.delete(DbSchemas.ItemsTable.NAME, DbSchemas.ItemsTable.Cols.UUID + " = ?",
                 new String[]{uuidString});

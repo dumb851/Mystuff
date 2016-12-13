@@ -20,6 +20,7 @@ public class BaseHelper extends SQLiteOpenHelper {
                 DbSchemas.ItemsTable.Cols.UUID   + ", " +
                 DbSchemas.ItemsTable.Cols.TITLE  + ", " +
                 DbSchemas.ItemsTable.Cols.DATE   + "" +
+                DbSchemas.ItemsTable.Cols.DELETION_MARK   + "" +
                 ")"
         );
 

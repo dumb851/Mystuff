@@ -10,6 +10,7 @@ public class DbSchemas {
             public static final String UUID   = "uuid";
             public static final String TITLE  = "title";
             public static final String DATE   = "lastSaved";
+            public static final String DELETION_MARK   = "deletionMark";
 
         }
     }

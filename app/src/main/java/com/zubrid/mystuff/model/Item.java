@@ -13,6 +13,28 @@ public class Item implements iItemList{
     private List<Label> mLabels;
     private int orderNumber;
     private boolean mIsSeparator;
+    private boolean mDeletionMark; //!TODO doing DeletionMark 13/02/2016
+
+    public boolean isDeletionMark() {
+        return mDeletionMark;
+    }
+
+    public void setDeletionMark(boolean deletionMark) {
+
+        mDeletionMark = deletionMark;
+    }
+
+    public void setDeletionMark(int i) {
+
+        if (i != 0) {
+            mDeletionMark = true;
+        } else {
+            mDeletionMark = false;
+        }
+
+    }
+
+
 
     public boolean isSeparator() {
         return mIsSeparator;

@@ -35,9 +35,11 @@ import java.util.UUID;
 public class ItemFragment extends Fragment {
 
     public static final String EXTRA_ITEM_ID = "mystuff.ITEM_ID";
+    public static final String EXTRA_DELETED_ITEM = "ITEM_FRAGMENT_EXTRA_DELETED_ITEM";
+
+
     public static final int INTENT_CHOICE_LABEL = 1;
     private static final String TAG = "ItemFragment_TAG";
-
 
     private EditText mTitleField;
     private TextView mIdView;
@@ -175,10 +177,10 @@ public class ItemFragment extends Fragment {
             case R.id.menu_item_delete:
 
                 Intent intent = new Intent();
-                intent.putExtra("itemId", mItem.getId().toString());
+                intent.putExtra(EXTRA_DELETED_ITEM, mItem.getId());
                 getActivity().setResult(Activity.RESULT_OK, intent);
 
-                //!ItemLab.get(getActivity()).deleteItem(mItem);
+
                 getActivity().finish();
                 return true;
             default:

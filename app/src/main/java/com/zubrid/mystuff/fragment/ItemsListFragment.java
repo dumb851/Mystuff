@@ -140,7 +140,10 @@ public class ItemsListFragment extends Fragment {
 
         //if (requestCode == INTENT_NEW_ITEM) {
 
-            if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+
+            if (data.hasExtra("changedItems")) {
+
                 mItems = ItemLab.get(getActivity()).getItems();
 
                 ArrayList<UUID> changedItems = (ArrayList<UUID>) data.getSerializableExtra("changedItems");
@@ -175,10 +178,26 @@ public class ItemsListFragment extends Fragment {
                         mLinearLayoutManager.scrollToPosition(newItem.getOrderNumber());
                     }
                 }
+            } else if (data.hasExtra(ItemFragment.EXTRA_DELETED_ITEM)) {
+
+                UUID deletedItemUUID = (UUID) data.getSerializableExtra(ItemFragment.EXTRA_DELETED_ITEM);
+
+                Item itemForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
+
+                for (Item item : mItems) {
+                    if (item.getId().equals(deletedItemUUID)) {
+
+                        int orderNumber = item.getOrderNumber();
+                        mItems.remove(item);
+
+                        ItemLab.get(getActivity()).deleteItemByUUID(deletedItemUUID);
+
+                        mAdapter.notifyItemRemoved(orderNumber);
+                        break;
+                    }
+                }
             }
-       // }
-
-
+        }
     }
 
     @Override
@@ -316,10 +335,14 @@ public class ItemsListFragment extends Fragment {
 
         public void notifyItemInserted(Item item) {
 
-            item.getOrderNumber();
-
             notifyItemInserted(item.getOrderNumber());
         }
+
+        public void notifyItemRemoved(Item item) {
+
+            notifyItemRemoved(item.getOrderNumber());
+        }
+
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder implements
