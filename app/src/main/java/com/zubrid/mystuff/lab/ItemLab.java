@@ -198,4 +198,12 @@ public class ItemLab {
 
         Log.i(TAG, "update result= " + result);
     }
+
+    public void moveItemToTrash(Item item) {
+
+        item.setDeletionMark(true);
+        updateItem(item);
+
+    }
+
 }

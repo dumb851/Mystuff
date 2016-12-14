@@ -190,7 +190,7 @@ public class ItemsListFragment extends Fragment {
                         int orderNumber = item.getOrderNumber();
                         mItems.remove(item);
 
-                        ItemLab.get(getActivity()).deleteItemByUUID(deletedItemUUID);
+                        ItemLab.get(getActivity()).moveItemToTrash(itemForDeleting);
 
                         mAdapter.notifyItemRemoved(orderNumber);
                         break;
