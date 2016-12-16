@@ -192,7 +192,7 @@ public class ItemsListFragment extends Fragment {
 
                         ItemLab.get(getActivity()).moveItemToTrash(itemForDeleting);
 
-                        mAdapter.notifyItemRemoved(orderNumber);
+                        //!mAdapter.notifyItemRemoved(orderNumber);
                         break;
                     }
                 }

@@ -19,7 +19,7 @@ public class BaseHelper extends SQLiteOpenHelper {
                 "_id integer primary key autoincrement, " +
                 DbSchemas.ItemsTable.Cols.UUID   + ", " +
                 DbSchemas.ItemsTable.Cols.TITLE  + ", " +
-                DbSchemas.ItemsTable.Cols.DATE   + "" +
+                DbSchemas.ItemsTable.Cols.DATE   + ", " +
                 DbSchemas.ItemsTable.Cols.DELETION_MARK   + "" +
                 ")"
         );

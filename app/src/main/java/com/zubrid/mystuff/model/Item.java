@@ -15,6 +15,16 @@ public class Item implements iItemList{
     private boolean mIsSeparator;
     private boolean mDeletionMark; //!TODO doing DeletionMark 13/02/2016 in items list
 
+    public int getDeletionMark() {
+
+        if (mDeletionMark) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+
     public boolean isDeletionMark() {
         return mDeletionMark;
     }

@@ -249,7 +249,6 @@ public class ItemFragment extends Fragment {
         intent.putExtra("changedItems", mChangedItems);
         getActivity().setResult(Activity.RESULT_OK, intent);
 
-
         mItem = ItemLab.get(getActivity()).getItem(mItem.getId());
         mLastSaved.setText(mItem.getLastSavedDate().toString());
         Log.i("setLastSaved", mItem.getLastSavedDate().toString());

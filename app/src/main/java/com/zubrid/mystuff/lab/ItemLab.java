@@ -159,6 +159,7 @@ public class ItemLab {
         values.put(DbSchemas.ItemsTable.Cols.UUID, item.getId().toString());
         values.put(DbSchemas.ItemsTable.Cols.TITLE, item.getTitle());
         values.put(DbSchemas.ItemsTable.Cols.DATE, new Date().getTime());
+        values.put(DbSchemas.ItemsTable.Cols.DELETION_MARK, item.getDeletionMark());
 
         return values;
     }
