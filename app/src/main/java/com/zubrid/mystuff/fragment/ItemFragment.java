@@ -3,7 +3,10 @@ package com.zubrid.mystuff.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -26,6 +29,7 @@ import com.zubrid.mystuff.activity.ChoiceLabelActivity;
 import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.model.ChoiceItem;
+import com.zubrid.mystuff.model.Image;
 import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.Label;
 
@@ -39,6 +43,7 @@ public class ItemFragment extends Fragment {
 
 
     public static final int INTENT_CHOICE_LABEL = 1;
+    private static final int REQUEST_PHOTO = 2;
     private static final String TAG = "ItemFragment_TAG";
 
     private EditText mTitleField;
@@ -139,11 +144,34 @@ public class ItemFragment extends Fragment {
             }
         });
 
-        Button buttonAddPage = (Button) view.findViewById(R.id.item_button_add_page);
-        buttonAddPage.setOnClickListener(new View.OnClickListener() {
+        Button addPageButton = (Button) view.findViewById(R.id.item_button_add_page);
+        addPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addPage();
+            }
+        });
+
+
+        //
+        Button takeImageButton = (Button) view.findViewById(R.id.take_image);
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        boolean canTakePhoto = captureImage.resolveActivity(packageManager) != null;
+        takeImageButton.setEnabled(canTakePhoto);
+
+        takeImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Image image = new Image();
+                Uri uri = Uri.fromFile(image.getImageFile(getContext()));
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+
             }
         });
 
@@ -198,11 +226,11 @@ public class ItemFragment extends Fragment {
         if (requestCode == INTENT_CHOICE_LABEL) {
             ArrayList<ChoiceItem> changedItems = (ArrayList<ChoiceItem>) data.getSerializableExtra("changedItems");
 
-            for (ChoiceItem changedItem: changedItems) {
+            for (ChoiceItem changedItem : changedItems) {
                 if (changedItem.isChecked()) {
-                    ItemLabelsLab.get(getContext()).addLabelToItem((Label)changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(getContext()).addLabelToItem((Label) changedItem.getItem(), mItem);
                 } else {
-                    ItemLabelsLab.get(getContext()).deleteLabelFromItem((Label)changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(getContext()).deleteLabelFromItem((Label) changedItem.getItem(), mItem);
                 }
 
             }
@@ -269,7 +297,7 @@ public class ItemFragment extends Fragment {
     }
 
     //CallBack
-    public interface ItemFragmentListener{
+    public interface ItemFragmentListener {
         void addPage();
     }
 }

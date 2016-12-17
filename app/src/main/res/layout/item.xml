@@ -60,4 +60,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/item_button_add_page"/>
 
+    <Button
+        android:text="Take a photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/take_image"/>
+
 </LinearLayout>
