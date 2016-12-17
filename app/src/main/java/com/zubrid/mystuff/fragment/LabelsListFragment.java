@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.LabelPagerActivity;
+import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
@@ -229,7 +228,7 @@ public class LabelsListFragment extends Fragment{
         public void onClick(View v) {
 
             //TODO
-            Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
+           //! Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
 
             if (mLabel == null) {
                 return;
@@ -244,7 +243,7 @@ public class LabelsListFragment extends Fragment{
         public boolean onLongClick(View v) {
 
             //TODO
-            Snackbar.make(v, "onLongClick", Snackbar.LENGTH_SHORT).show();
+            //!Snackbar.make(v, "onLongClick", Snackbar.LENGTH_SHORT).show();
 
 //!                ((AppCompatActivity) getActivity()).startSupportActionMode(mDeleteMode);
 //                mMultiSelector.setSelected(this, true);

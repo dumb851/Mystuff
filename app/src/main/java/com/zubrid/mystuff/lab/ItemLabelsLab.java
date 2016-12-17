@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
-import com.zubrid.mystuff.database.ItemLabelsCursorWrapper;
+import com.zubrid.mystuff.database.MyCursorWrapper;
 import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
@@ -47,7 +47,7 @@ public class ItemLabelsLab {
 
         String[] whereArgs = {item.getId().toString()};
 
-        ItemLabelsCursorWrapper cursor = queryLabels(whereClause, whereArgs);
+        MyCursorWrapper cursor = queryLabels(whereClause, whereArgs);
 
 
         try {
@@ -68,7 +68,7 @@ public class ItemLabelsLab {
         return itemLabels;
     }
 
-    private ItemLabelsCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
+    private MyCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
 
         //!String orderBy = DbSchemas.ItemLabelsTable.Cols.TITLE;
         //!whereClause = "";
@@ -82,7 +82,7 @@ public class ItemLabelsLab {
                 ""//!orderBy
         );
 
-        return new ItemLabelsCursorWrapper(cursor);
+        return new MyCursorWrapper(cursor);
     }
 
     public void addLabelToItem(Label label, Item item) {

@@ -23,7 +23,7 @@ public class DbSchemas {
             public static final String UUID   = "uuid";
             public static final String TITLE  = "title";
             public static final String DATE   = "lastSaved";
-
+            public static final String DELETION_MARK   = "deletionMark";
         }
     }
 
@@ -34,8 +34,21 @@ public class DbSchemas {
 
             public static final String UUID_ITEM   = "uuid_item";
             public static final String UUID_LABEL  = "uuid_label";
-            //public static final String UUID  = "uuid_label"; //! что бы не падало
 
         }
     }
+
+ public static final class ImagesTable {
+        public static final String NAME = "images";
+
+        public static final class Cols {
+
+            public static final String UUID             = "uuid";
+            public static final String UUID_OWNER       = "uuid_owner";
+            public static final String DELETION_MARK    = "deletionMark";
+        }
+    }
+
+
+
 }

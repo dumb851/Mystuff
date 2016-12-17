@@ -28,15 +28,25 @@ public class BaseHelper extends SQLiteOpenHelper {
                 "_id integer primary key autoincrement, " +
                 DbSchemas.LabelsTable.Cols.UUID   + ", " +
                 DbSchemas.LabelsTable.Cols.TITLE  + ", " +
-                DbSchemas.LabelsTable.Cols.DATE   + "" +
+                DbSchemas.LabelsTable.Cols.DATE  + ", " +
+                DbSchemas.LabelsTable.Cols.DELETION_MARK   + "" +
                 ")"
         );
 
-        db.execSQL("create table " + DbSchemas.ItemLabelsTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                DbSchemas.ItemLabelsTable.Cols.UUID_ITEM   + ", " +
-                DbSchemas.ItemLabelsTable.Cols.UUID_LABEL  + "" +
+        db.execSQL("create table " +
+                DbSchemas.ItemLabelsTable.NAME + "(" +
+                "_id integer primary key autoincrement, "   +
+                DbSchemas.ItemLabelsTable.Cols.UUID_ITEM    + ", " +
+                DbSchemas.ItemLabelsTable.Cols.UUID_LABEL   + "" +
                 ")"
+        );
+
+        db.execSQL("create table "                          +
+                DbSchemas.ImagesTable.NAME + "("            +
+                "_id integer primary key autoincrement, "   +
+                DbSchemas.ImagesTable.Cols.UUID             + ", " +
+                DbSchemas.ImagesTable.Cols.UUID_OWNER       + ", " +
+                DbSchemas.ImagesTable.Cols.DELETION_MARK    + "" + ")"
         );
     }
 

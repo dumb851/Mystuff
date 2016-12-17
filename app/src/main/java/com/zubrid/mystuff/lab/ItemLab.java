@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
-import com.zubrid.mystuff.database.ItemsCursorWrapper;
+import com.zubrid.mystuff.database.MyCursorWrapper;
 import com.zubrid.mystuff.model.Item;
 
 import java.util.ArrayList;
@@ -20,14 +20,11 @@ public class ItemLab {
     public static final String TAG = "ItemLab";
     private static ItemLab sItemLab;
 
-    private Context mContext;
     private SQLiteDatabase mDatabase;
 
     private ItemLab(Context context) {
 
-        mContext = context.getApplicationContext();
         mDatabase = new BaseHelper(context).getWritableDatabase();
-
 
     }
 
@@ -45,7 +42,7 @@ public class ItemLab {
 
         ArrayList<Item> items = new ArrayList<>();
 
-        ItemsCursorWrapper cursor = queryItems(null, null);
+        MyCursorWrapper cursor = queryItems(null, null);
 
         String firstLetterOfLastItem  = "";
 
@@ -94,7 +91,7 @@ public class ItemLab {
         int orderNumber = 0;
 
         ArrayList<Item> items = new ArrayList<>();
-        ItemsCursorWrapper cursor = queryItems(null, null);
+        MyCursorWrapper cursor = queryItems(null, null);
 
         try {
             cursor.moveToFirst();
@@ -115,7 +112,7 @@ public class ItemLab {
         return items;
     }
 
-    private ItemsCursorWrapper queryItems(String whereClause, String[] whereArgs) {
+    private MyCursorWrapper queryItems(String whereClause, String[] whereArgs) {
 
         String orderBy = DbSchemas.ItemsTable.Cols.TITLE;
 
@@ -129,7 +126,7 @@ public class ItemLab {
                 orderBy
         );
 
-        return new ItemsCursorWrapper(cursor);
+        return new MyCursorWrapper(cursor);
     }
 
     public void addItem(Item item) {
@@ -166,7 +163,7 @@ public class ItemLab {
 
     public Item getItem(UUID id) {
 
-        ItemsCursorWrapper cursor = queryItems(
+        MyCursorWrapper cursor = queryItems(
                 DbSchemas.ItemsTable.Cols.UUID + " =?",
                 new String[]{id.toString()}
         );

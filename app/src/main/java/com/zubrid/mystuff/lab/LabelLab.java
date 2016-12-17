@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
-import com.zubrid.mystuff.database.LabelsCursorWrapper;
+import com.zubrid.mystuff.database.MyCursorWrapper;
 import com.zubrid.mystuff.model.Label;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class LabelLab {
         int orderNumber = 0;
 
         ArrayList<Label> labels = new ArrayList<>();
-        LabelsCursorWrapper cursor = queryLabels(null, null);
+        MyCursorWrapper cursor = queryLabels(null, null);
         String firstLetterOfLastLabel = "";
 
         try {
@@ -90,7 +90,7 @@ public class LabelLab {
         return labels;
     }
 
-    private LabelsCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
+    private MyCursorWrapper queryLabels(String whereClause, String[] whereArgs) {
 
         String orderBy = DbSchemas.LabelsTable.Cols.TITLE;
 
@@ -104,7 +104,7 @@ public class LabelLab {
                 orderBy
         );
 
-        return new LabelsCursorWrapper(cursor);
+        return new MyCursorWrapper(cursor);
     }
 
     public void addLabel(Label label) {
@@ -134,7 +134,7 @@ public class LabelLab {
 
     public Label getLabel(UUID id) {
 
-        LabelsCursorWrapper cursor = queryLabels(
+        MyCursorWrapper cursor = queryLabels(
                 DbSchemas.LabelsTable.Cols.UUID + " =?",
                 new String[]{id.toString()}
         );

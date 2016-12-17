@@ -24,7 +24,6 @@ public class Item implements iItemList{
         return 0;
     }
 
-
     public boolean isDeletionMark() {
         return mDeletionMark;
     }
