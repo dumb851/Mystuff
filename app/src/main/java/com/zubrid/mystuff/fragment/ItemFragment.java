@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zubrid.mystuff.R;
@@ -32,7 +34,9 @@ import com.zubrid.mystuff.model.ChoiceItem;
 import com.zubrid.mystuff.model.Image;
 import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.Label;
+import com.zubrid.mystuff.utils.PictureUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -43,7 +47,7 @@ public class ItemFragment extends Fragment {
 
 
     public static final int INTENT_CHOICE_LABEL = 1;
-    private static final int REQUEST_PHOTO = 2;
+    private static final int REQUEST_TAKE_PHOTO = 2;
     private static final String TAG = "ItemFragment_TAG";
 
     private EditText mTitleField;
@@ -51,11 +55,14 @@ public class ItemFragment extends Fragment {
     private TextView mLastSaved;
     private boolean mIsNewItem = false;
     private Item mItem;
-
+    private File mPhotoFile; //! TODO temp
     private ArrayList<UUID> mChangedItems = new ArrayList<>();
     private ItemFragmentListener mCallback;
     private boolean mPageAdded;
     private boolean mCreatingNewItems;
+    private ImageView mPhotoView;
+    private Context mContext;
+
 
     public static ItemFragment newInstance(UUID itemId) {
 
@@ -73,6 +80,8 @@ public class ItemFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mContext = getContext();
 
         UUID itemId = (UUID) getArguments().getSerializable(EXTRA_ITEM_ID);
 
@@ -138,7 +147,7 @@ public class ItemFragment extends Fragment {
 //                DialogFragment selectLabelDialog = new SelectLabelDialogFragment();
 //                selectLabelDialog.show(getFragmentManager(), "SelectLabelDialog");
 
-                Intent intent = ChoiceLabelActivity.newIntent(getContext(), mItem);
+                Intent intent = ChoiceLabelActivity.newIntent(mContext, mItem);
                 startActivityForResult(intent, INTENT_CHOICE_LABEL);
 
             }
@@ -167,13 +176,17 @@ public class ItemFragment extends Fragment {
             public void onClick(View view) {
 
                 Image image = new Image();
-                Uri uri = Uri.fromFile(image.getImageFile(getContext()));
+                mPhotoFile = image.getImageFile(mContext);
+                Uri uri = Uri.fromFile(mPhotoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
-                startActivityForResult(captureImage, REQUEST_PHOTO);
+                startActivityForResult(captureImage, REQUEST_TAKE_PHOTO);
 
             }
         });
+
+        //! TODO временно в ImageView, нужно список какой нибудь.
+        mPhotoView = (ImageView) view.findViewById(R.id.imageView);
 
         return view;
     }
@@ -228,12 +241,14 @@ public class ItemFragment extends Fragment {
 
             for (ChoiceItem changedItem : changedItems) {
                 if (changedItem.isChecked()) {
-                    ItemLabelsLab.get(getContext()).addLabelToItem((Label) changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(mContext).addLabelToItem((Label) changedItem.getItem(), mItem);
                 } else {
-                    ItemLabelsLab.get(getContext()).deleteLabelFromItem((Label) changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(mContext).deleteLabelFromItem((Label) changedItem.getItem(), mItem);
                 }
 
             }
+        } else if (requestCode == REQUEST_TAKE_PHOTO) {
+            updatePhotoView();
         }
 
     }
@@ -251,6 +266,16 @@ public class ItemFragment extends Fragment {
                     + " must implement ItemFragmentListener");
         }
 
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(
+                    mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
     }
 
     private void updateItem() {
