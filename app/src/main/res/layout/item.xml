@@ -48,6 +48,20 @@
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_label_black_24dp"
+        android:id="@+id/imageView2"/>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item_recycler_view_labels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +73,8 @@
         android:text="add page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item_button_add_page"/>
+        android:id="@+id/item_button_add_page"
+        android:visibility="gone"/>
 
     <Button
         android:text="Take a photo"

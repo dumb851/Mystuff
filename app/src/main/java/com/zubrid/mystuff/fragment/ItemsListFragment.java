@@ -400,7 +400,6 @@ public class ItemsListFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            //TODO
             //Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
 
             if (mItem == null) {
@@ -415,7 +414,6 @@ public class ItemsListFragment extends Fragment {
         @Override
         public boolean onLongClick(View v) {
 
-            //TODO
             //Snackbar.make(v, "onLongClick", Snackbar.LENGTH_SHORT).show();
 
 //!                ((AppCompatActivity) getActivity()).startSupportActionMode(mDeleteMode);

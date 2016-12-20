@@ -13,7 +13,7 @@ public class Item implements iItemList{
     private List<Label> mLabels;
     private int orderNumber;
     private boolean mIsSeparator;
-    private boolean mDeletionMark; //!TODO doing DeletionMark 13/02/2016 in items list
+    private boolean mDeletionMark;
 
     public int getDeletionMark() {
 

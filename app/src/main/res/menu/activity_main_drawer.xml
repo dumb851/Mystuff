@@ -16,7 +16,7 @@
             android:title="@string/drawer_places"/>
         <item
             android:id="@+id/nav_labels"
-            android:icon="@drawable/ic_local_offer_black_24dp"
+            android:icon="@drawable/ic_label_black_24dp"
             android:title="@string/drawer_labels"/>
         <item
             android:id="@+id/nav_manage"

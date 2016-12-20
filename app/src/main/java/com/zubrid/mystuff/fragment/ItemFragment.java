@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,9 +32,11 @@ import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.ChoiceLabelActivity;
 import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
+import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
 import com.zubrid.mystuff.model.Image;
 import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 import com.zubrid.mystuff.utils.PictureUtils;
 
@@ -40,16 +44,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.zubrid.mystuff.R.layout.item;
+
 public class ItemFragment extends Fragment {
 
     public static final String EXTRA_ITEM_ID = "mystuff.ITEM_ID";
     public static final String EXTRA_DELETED_ITEM = "ITEM_FRAGMENT_EXTRA_DELETED_ITEM";
 
-
     public static final int INTENT_CHOICE_LABEL = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
     private static final String TAG = "ItemFragment_TAG";
 
+    //region local variables
     private EditText mTitleField;
     private TextView mIdView;
     private TextView mLastSaved;
@@ -62,7 +68,13 @@ public class ItemFragment extends Fragment {
     private boolean mCreatingNewItems;
     private ImageView mPhotoView;
     private Context mContext;
+    private RecyclerView mLabelRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private ArrayList<Label> mLabels = new ArrayList<>();
+    private LabelAdapter mLabelAdapter;
+    //endregion
 
+    //! TODO GridView для отображения меток!
 
     public static ItemFragment newInstance(UUID itemId) {
 
@@ -112,7 +124,7 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.item, container, false);
+        View view = inflater.inflate(item, container, false);
 
         mTitleField = (EditText) view.findViewById(R.id.item_title_text_edit);
         mTitleField.setText(mItem.getTitle());
@@ -140,12 +152,16 @@ public class ItemFragment extends Fragment {
         mLastSaved = (TextView) view.findViewById(R.id.item_last_saved_text_view);
         mLastSaved.setText(mItem.getLastSavedDate().toString());
 
+        fillLabels();
+
+        configureLabelListView(view);
+
+
+
         Button buttonOpenLabels = (Button) view.findViewById(R.id.button_open_labels);
         buttonOpenLabels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DialogFragment selectLabelDialog = new SelectLabelDialogFragment();
-//                selectLabelDialog.show(getFragmentManager(), "SelectLabelDialog");
 
                 Intent intent = ChoiceLabelActivity.newIntent(mContext, mItem);
                 startActivityForResult(intent, INTENT_CHOICE_LABEL);
@@ -153,13 +169,16 @@ public class ItemFragment extends Fragment {
             }
         });
 
-        Button addPageButton = (Button) view.findViewById(R.id.item_button_add_page);
-        addPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addPage();
-            }
-        });
+
+
+
+//!         Button addPageButton = (Button) view.findViewById(R.id.item_button_add_page);
+//        addPageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                addPage();
+//            }
+//        });
 
 
         //
@@ -268,6 +287,24 @@ public class ItemFragment extends Fragment {
 
     }
 
+    //region Label list view
+
+    private void configureLabelListView(View view) {
+
+        mLinearLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+
+        mLabelRecyclerView = (RecyclerView) view.findViewById(R.id.item_recycler_view_labels);
+        mLabelRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+        mLabelAdapter = new LabelAdapter();
+
+        mLabelRecyclerView.setAdapter(mLabelAdapter);
+
+    }
+
+    //endregion
+
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
@@ -321,8 +358,153 @@ public class ItemFragment extends Fragment {
         return ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
+    private void fillLabels() {
+
+        ArrayList<ItemLabel> itemLabels = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
+
+        LabelLab labelLab = LabelLab.get(getActivity());
+
+        for (ItemLabel itemLabel : itemLabels) {
+            Label label = labelLab.getLabel(itemLabel.getLabelUUID());
+            mLabels.add(label);
+        }
+    }
+
+
     //CallBack
     public interface ItemFragmentListener {
         void addPage();
     }
+
+    //region Label RecyclerView
+
+    private class LabelAdapter extends RecyclerView.Adapter<ItemFragment.ViewHolder> {
+
+        public static final int VIEW_TYPE_ITEM = 0;
+        public static final int VIEW_TYPE_SEPARATOR = 1;
+
+
+        @Override
+        public ItemFragment.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.label_small, parent, false);
+            return new ItemFragment.ViewHolder(view, viewType);
+
+        }
+
+        @Override
+        public void onBindViewHolder(ItemFragment.ViewHolder holder, int position) {
+
+            holder.itemView.setEnabled(true);
+
+            Label label = mLabels.get(position);
+            holder.bindItem(label);
+
+        }
+
+
+        //        @Override
+//        public void onBindViewHolder(ItemHolder holder, int pos) {
+//            Item item = mItems.get(pos);
+//            holder.bindItem(item);
+//            Log.d(TAG, "binding crime" + item + "at position" + pos);
+//        }
+
+        @Override
+        public int getItemCount() {
+            return mLabels.size();
+        }
+
+        public void notifyItemInserted(Item item) {
+
+            notifyItemInserted(item.getOrderNumber());
+        }
+
+        public void notifyItemRemoved(Item item) {
+
+            notifyItemRemoved(item.getOrderNumber());
+        }
+
+    }
+
+    private class ViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener, View.OnLongClickListener {
+
+        private final TextView mTitle;
+//        private final TextView mIdTextView;
+        private Label mLabel;
+
+        public ViewHolder(View view, int viewType) {
+            //!super(itemView, mMultiSelector);
+
+            super(view);
+
+//            if (viewType == ItemsListFragment.ItemAdapter.VIEW_TYPE_SEPARATOR) {
+//
+            mTitle = (TextView) view.findViewById(R.id.label_list_title_text_view);
+
+
+//
+// mIdTextView = null;
+//
+//            } else {
+//
+//                mTitleTextView = (TextView) itemView.findViewById(R.id.item_list_title_text_view);
+//                mIdTextView = (TextView) itemView.findViewById(R.id.item_list_id_text_view);
+//
+//                itemView.setOnClickListener(this);
+//                //itemView.getId();
+//                itemView.setLongClickable(true);
+//                itemView.setOnLongClickListener(this);
+//            }
+
+
+            //!mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_list_item_solvedCheckBox);
+
+//            CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
+//
+//            cardView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Snackbar.make(view, "onClick", Snackbar.LENGTH_SHORT).show();
+//                }
+//            });
+
+        }
+
+        public void bindItem(Label label) {
+            mLabel = label;
+            mTitle.setText(label.getTitle());
+
+        }
+
+        //
+        @Override
+        public void onClick(View v) {
+
+//            //Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
+//
+//            if (mItem == null) {
+//                return;
+//            }
+
+            //!selectItem(mItem);
+
+        }
+
+        //
+        @Override
+        public boolean onLongClick(View v) {
+
+            //Snackbar.make(v, "onLongClick", Snackbar.LENGTH_SHORT).show();
+
+//!                ((AppCompatActivity) getActivity()).startSupportActionMode(mDeleteMode);
+//                mMultiSelector.setSelected(this, true);
+            return true;
+        }
+    }
+
+    //endregion
+
 }
