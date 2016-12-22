@@ -62,25 +62,41 @@
         android:scrollbars="vertical"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="labels..."
-        android:id="@+id/button_open_labels"
-        android:layout_gravity="center_horizontal"/>
-
-    <Button
-        android:text="add page"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_button_add_page"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:text="Take a photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/take_image"/>
+        <Button
+            android:text="Test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/testButton"
+            android:layout_weight="1"/>
+
+        <Button
+            android:text="Take a photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/take_image"
+            android:layout_weight="1"/>
+
+        <Button
+            android:text="add page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_button_add_page"
+            android:visibility="visible"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="labels..."
+            android:id="@+id/button_open_labels"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.ChoiceLabelActivity;
+import com.zubrid.mystuff.activity.FlowLayouDemo;
 import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
@@ -206,6 +207,20 @@ public class ItemFragment extends Fragment {
 
         //! TODO временно в ImageView, нужно список какой нибудь.
         mPhotoView = (ImageView) view.findViewById(R.id.imageView);
+
+        //! test
+
+        Button testButton = (Button) view.findViewById(R.id.testButton);
+
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), FlowLayouDemo.class);
+                startActivity(intent);
+
+            }
+        });
 
         return view;
     }
