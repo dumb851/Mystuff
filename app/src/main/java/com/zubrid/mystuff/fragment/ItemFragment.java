@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zubrid.mystuff.R;
@@ -39,6 +40,7 @@ import com.zubrid.mystuff.model.Image;
 import com.zubrid.mystuff.model.Item;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
+import com.zubrid.mystuff.utils.FlowLayout;
 import com.zubrid.mystuff.utils.PictureUtils;
 
 import java.io.File;
@@ -73,6 +75,8 @@ public class ItemFragment extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private ArrayList<Label> mLabels = new ArrayList<>();
     private LabelAdapter mLabelAdapter;
+    private FlowLayout mLabelsFlowLayout;
+    private LayoutInflater mLayoutInflater;
     //endregion
 
     //! TODO GridView для отображения меток!
@@ -127,7 +131,10 @@ public class ItemFragment extends Fragment {
 
         View view = inflater.inflate(item, container, false);
 
+        mLayoutInflater = inflater;
+
         mTitleField = (EditText) view.findViewById(R.id.item_title_text_edit);
+
         mTitleField.setText(mItem.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -153,10 +160,14 @@ public class ItemFragment extends Fragment {
         mLastSaved = (TextView) view.findViewById(R.id.item_last_saved_text_view);
         mLastSaved.setText(mItem.getLastSavedDate().toString());
 
+        if (mIsNewItem) {
+            LinearLayout fakeLayout = (LinearLayout) view.findViewById(R.id.item_fake_layout);
+            fakeLayout.setVisibility(View.GONE);
+        }
+
         fillLabels();
 
-        configureLabelListView(view);
-
+        configureLabelsView(view);
 
 
         Button buttonOpenLabels = (Button) view.findViewById(R.id.button_open_labels);
@@ -169,8 +180,6 @@ public class ItemFragment extends Fragment {
 
             }
         });
-
-
 
 
 //!         Button addPageButton = (Button) view.findViewById(R.id.item_button_add_page);
@@ -304,7 +313,7 @@ public class ItemFragment extends Fragment {
 
     //region Label list view
 
-    private void configureLabelListView(View view) {
+    private void configureLabelsView(View view) {
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
@@ -315,6 +324,23 @@ public class ItemFragment extends Fragment {
         mLabelAdapter = new LabelAdapter();
 
         mLabelRecyclerView.setAdapter(mLabelAdapter);
+
+        //
+        mLabelsFlowLayout = (FlowLayout) view.findViewById(R.id.item_labels_flow_layout);
+        FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(6, 6);
+
+        for (Label label : mLabels) {
+            View labelView = mLayoutInflater.inflate(R.layout.label_small, null);
+
+            labelView.setLayoutParams(layoutParams);
+
+            TextView labelViewTitle = (TextView)
+                    labelView.findViewById(R.id.label_list_title_text_view);
+
+            labelViewTitle.setText(label.getTitle());
+
+            mLabelsFlowLayout.addView(labelView);
+        }
 
     }
 
@@ -447,7 +473,7 @@ public class ItemFragment extends Fragment {
             View.OnClickListener, View.OnLongClickListener {
 
         private final TextView mTitle;
-//        private final TextView mIdTextView;
+        //        private final TextView mIdTextView;
         private Label mLabel;
 
         public ViewHolder(View view, int viewType) {

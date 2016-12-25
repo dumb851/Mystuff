@@ -42,6 +42,10 @@ public class ItemLab {
 
         ArrayList<Item> items = new ArrayList<>();
 
+        //! TODO hide deletionMarked
+//        String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_LABEL + " = ? AND "
+//                + DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
+
         MyCursorWrapper cursor = queryItems(null, null);
 
         String firstLetterOfLastItem  = "";
