@@ -36,7 +36,7 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:padding="4dp"-->
             <!--android:textStyle="bold"-->
-            <!--tools:text="Item title" />-->
+            <!--tools:text="ItemStuff title" />-->
 
         <!--<TextView-->
             <!--android:id="@+id/item_list_id_text_view"-->
@@ -44,7 +44,7 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_below="@id/item_list_title_text_view"-->
             <!--android:padding="4dp"-->
-            <!--tools:text="Item Id" />-->
+            <!--tools:text="ItemStuff Id" />-->
     <!--</LinearLayout>-->
     <!---->
 <!--</LinearLayout>-->
@@ -66,12 +66,12 @@
             <!--android:id="@+id/item_list_title_text_view"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
-            <!--tools:text="Item title"/>-->
+            <!--tools:text="ItemStuff title"/>-->
         <!--<TextView-->
             <!--android:id="@+id/item_list_title_text_view2"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
-            <!--tools:text="Item title"/>-->
+            <!--tools:text="ItemStuff title"/>-->
 
         <LinearLayout
         android:orientation="vertical"

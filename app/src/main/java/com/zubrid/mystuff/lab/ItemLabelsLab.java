@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
 import com.zubrid.mystuff.database.MyCursorWrapper;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 
@@ -38,14 +38,14 @@ public class ItemLabelsLab {
         return sItemLabelsLab;
     }
 
-    public ArrayList<ItemLabel> getLabelsByItem(Item item) {
+    public ArrayList<ItemLabel> getLabelsByItem(ItemStuff itemStuff) {
 
         int orderNumber = 0;
 
         ArrayList<ItemLabel> itemLabels = new ArrayList<>();
         String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
 
-        String[] whereArgs = {item.getId().toString()};
+        String[] whereArgs = {itemStuff.getId().toString()};
 
         MyCursorWrapper cursor = queryLabels(whereClause, whereArgs);
 
@@ -85,30 +85,30 @@ public class ItemLabelsLab {
         return new MyCursorWrapper(cursor);
     }
 
-    public void addLabelToItem(Label label, Item item) {
+    public void addLabelToItem(Label label, ItemStuff itemStuff) {
 
-        ContentValues values = getContentValues(label, item);
+        ContentValues values = getContentValues(label, itemStuff);
         mDatabase.insert(DbSchemas.ItemLabelsTable.NAME, null, values);
     }
 
-    public void deleteLabelFromItem(Label label, Item item) {
+    public void deleteLabelFromItem(Label label, ItemStuff itemStuff) {
 
         String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_LABEL + " = ? AND "
                 + DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
 
         String uuidLabel = label.getId().toString();
-        String uuidItem = item.getId().toString();
+        String uuidItem = itemStuff.getId().toString();
 
         mDatabase.delete(DbSchemas.ItemLabelsTable.NAME, whereClause,
                 new String[]{uuidLabel, uuidItem});
 
     }
 
-    private static ContentValues getContentValues(Label label, Item item) {
+    private static ContentValues getContentValues(Label label, ItemStuff itemStuff) {
 
         ContentValues values = new ContentValues();
         values.put(DbSchemas.ItemLabelsTable.Cols.UUID_LABEL, label.getId().toString());
-        values.put(DbSchemas.ItemLabelsTable.Cols.UUID_ITEM, item.getId().toString());
+        values.put(DbSchemas.ItemLabelsTable.Cols.UUID_ITEM, itemStuff.getId().toString());
 
         return values;
     }

@@ -37,7 +37,7 @@ import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
 import com.zubrid.mystuff.model.Image;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 import com.zubrid.mystuff.utils.FlowLayout;
@@ -66,7 +66,7 @@ public class ItemFragment extends Fragment {
     private TextView mIdView;
     private TextView mLastSaved;
     private boolean mIsNewItem = false;
-    private Item mItem;
+    private ItemStuff mItemStuff;
     private File mPhotoFile; //! TODO temp
     private ArrayList<UUID> mChangedItems = new ArrayList<>();
     private ItemFragmentListener mCallback;
@@ -108,12 +108,12 @@ public class ItemFragment extends Fragment {
         UUID itemId = (UUID) getArguments().getSerializable(EXTRA_ITEM_ID);
 
         if (itemId == null) {
-            mItem = new Item();
+            mItemStuff = new ItemStuff();
             mIsNewItem = true;
         } else {
-            mItem = ItemLab.get(getActivity()).getItem(itemId);
-            if (mItem == null) {
-                mItem = new Item(itemId);
+            mItemStuff = ItemLab.get(getActivity()).getItem(itemId);
+            if (mItemStuff == null) {
+                mItemStuff = new ItemStuff(itemId);
                 mIsNewItem = true;
             }
         }
@@ -139,7 +139,7 @@ public class ItemFragment extends Fragment {
         mLayoutInflater = inflater;
 
         mTitleField = (EditText) view.findViewById(R.id.item_title_text_edit);
-        mTitleField.setText(mItem.getTitle());
+        mTitleField.setText(mItemStuff.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -153,7 +153,7 @@ public class ItemFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mItem.setTitle(s.toString());
+                mItemStuff.setTitle(s.toString());
                 updateItem();
             }
         });
@@ -161,10 +161,10 @@ public class ItemFragment extends Fragment {
         mSavedTime = (TextView) view.findViewById(R.id.item_saved_time);
 
         mIdView = (TextView) view.findViewById(R.id.item_id_text_view);
-        mIdView.setText(mItem.getId().toString());
+        mIdView.setText(mItemStuff.getId().toString());
 
 //!        mLastSaved = (TextView) view.findViewById(R.id.item_last_saved_text_view);
-//        mLastSaved.setText(mItem.getLastSavedDate().toString());
+//        mLastSaved.setText(mItemStuff.getLastSavedDate().toString());
 
         if (mIsNewItem) {
             LinearLayout fakeLayout = (LinearLayout) view.findViewById(R.id.item_fake_layout);
@@ -183,7 +183,7 @@ public class ItemFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent intent = ChoiceLabelActivity.newIntent(mContext, mItem);
+                Intent intent = ChoiceLabelActivity.newIntent(mContext, mItemStuff);
                 startActivityForResult(intent, INTENT_CHOICE_LABEL);
 
             }
@@ -269,7 +269,7 @@ public class ItemFragment extends Fragment {
             case R.id.menu_item_delete:
 
                 Intent intent = new Intent();
-                intent.putExtra(EXTRA_DELETED_ITEM, mItem.getId());
+                intent.putExtra(EXTRA_DELETED_ITEM, mItemStuff.getId());
                 getActivity().setResult(Activity.RESULT_OK, intent);
 
 
@@ -292,9 +292,9 @@ public class ItemFragment extends Fragment {
 
             for (ChoiceItem changedItem : changedItems) {
                 if (changedItem.isChecked()) {
-                    ItemLabelsLab.get(mContext).addLabelToItem((Label) changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(mContext).addLabelToItem((Label) changedItem.getItem(), mItemStuff);
                 } else {
-                    ItemLabelsLab.get(mContext).deleteLabelFromItem((Label) changedItem.getItem(), mItem);
+                    ItemLabelsLab.get(mContext).deleteLabelFromItem((Label) changedItem.getItem(), mItemStuff);
                 }
 
             }
@@ -367,7 +367,7 @@ public class ItemFragment extends Fragment {
     private void updateSavedTime() {
 
         //! TODO make format string
-        Date savedDate = mItem.getLastSavedDate();
+        Date savedDate = mItemStuff.getLastSavedDate();
 
         if (savedDate == null) {
             mSavedTime.setText(R.string.not_saved);
@@ -385,11 +385,11 @@ public class ItemFragment extends Fragment {
 
         if (mIsNewItem) {
 
-            ItemLab.get(getActivity()).addItem(mItem);
+            ItemLab.get(getActivity()).addItem(mItemStuff);
             mIsNewItem = false;
 
         } else {
-            ItemLab.get(getActivity()).updateItem(mItem);
+            ItemLab.get(getActivity()).updateItem(mItemStuff);
 
         }
 
@@ -397,17 +397,17 @@ public class ItemFragment extends Fragment {
             addPage();
         }
 
-        if (!mChangedItems.contains(mItem.getId())) {
-            mChangedItems.add(mItem.getId());
+        if (!mChangedItems.contains(mItemStuff.getId())) {
+            mChangedItems.add(mItemStuff.getId());
         }
 
         Intent intent = new Intent();
         intent.putExtra("changedItems", mChangedItems);
         getActivity().setResult(Activity.RESULT_OK, intent);
 
-        mItem = ItemLab.get(getActivity()).getItem(mItem.getId());
-//!        mLastSaved.setText(mItem.getLastSavedDate().toString());
-//        Log.i("setLastSaved", mItem.getLastSavedDate().toString());
+        mItemStuff = ItemLab.get(getActivity()).getItem(mItemStuff.getId());
+//!        mLastSaved.setText(mItemStuff.getLastSavedDate().toString());
+//        Log.i("setLastSaved", mItemStuff.getLastSavedDate().toString());
 
         updateSavedTime();
     }
@@ -428,7 +428,7 @@ public class ItemFragment extends Fragment {
 
     private void fillLabels() {
 
-        ArrayList<ItemLabel> itemLabels = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
+        ArrayList<ItemLabel> itemLabels = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItemStuff);
 
         LabelLab labelLab = LabelLab.get(getActivity());
 
@@ -474,7 +474,7 @@ public class ItemFragment extends Fragment {
 
         //        @Override
 //        public void onBindViewHolder(ItemHolder holder, int pos) {
-//            Item item = mItems.get(pos);
+//            ItemStuff item = mItems.get(pos);
 //            holder.bindItem(item);
 //            Log.d(TAG, "binding crime" + item + "at position" + pos);
 //        }
@@ -484,14 +484,14 @@ public class ItemFragment extends Fragment {
             return mLabels.size();
         }
 
-        public void notifyItemInserted(Item item) {
+        public void notifyItemInserted(ItemStuff itemStuff) {
 
-            notifyItemInserted(item.getOrderNumber());
+            notifyItemInserted(itemStuff.getOrderNumber());
         }
 
-        public void notifyItemRemoved(Item item) {
+        public void notifyItemRemoved(ItemStuff itemStuff) {
 
-            notifyItemRemoved(item.getOrderNumber());
+            notifyItemRemoved(itemStuff.getOrderNumber());
         }
 
     }
@@ -553,11 +553,11 @@ public class ItemFragment extends Fragment {
 
 //            //Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
 //
-//            if (mItem == null) {
+//            if (mItemStuff == null) {
 //                return;
 //            }
 
-            //!selectItem(mItem);
+            //!selectItem(mItemStuff);
 
         }
 

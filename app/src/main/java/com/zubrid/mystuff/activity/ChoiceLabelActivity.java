@@ -6,15 +6,15 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.zubrid.mystuff.fragment.ChoiceLabelFragment;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 
 public class ChoiceLabelActivity extends SingleFragmentActivity{
 
     private ChoiceLabelFragment mFragment;
 
-    public static Intent newIntent(Context packageContext, Item item) {
+    public static Intent newIntent(Context packageContext, ItemStuff itemStuff) {
         Intent intent = new Intent(packageContext, ChoiceLabelActivity.class);
-        intent.putExtra(ChoiceLabelFragment.EXTRA_ITEM_ID, item.getId());
+        intent.putExtra(ChoiceLabelFragment.EXTRA_ITEM_ID, itemStuff.getId());
         return intent;
     }
 

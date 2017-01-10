@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <!--<item-->
+    <!--<itemStuff-->
         <!--android:id="@+id/menu_item_new_crime"-->
         <!--app:showAsAction="ifRoom|withText"-->
         <!--android:title="@string/new_item"-->
         <!--/>-->
-    <!--<item-->
+    <!--<itemStuff-->
         <!--android:id="@+id/menu_item_show_subtitle"-->
         <!--app:showAsAction="never"-->
         <!--android:title="@string/show_subtitle"-->
         <!--/>-->
-    <item
+    <itemStuff
     android:id="@+id/menu_item_show_subtitle"
     app:showAsAction="never"
     android:title="Delete //!"

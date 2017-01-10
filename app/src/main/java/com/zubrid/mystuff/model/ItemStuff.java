@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Item implements iItemList{
+public class ItemStuff implements iItemList{
 
     private UUID mId;
     private String mTitle;
@@ -47,11 +47,11 @@ public class Item implements iItemList{
         return mIsSeparator;
     }
 
-    public Item() {
+    public ItemStuff() {
         this(UUID.randomUUID());
     }
 
-    public Item(UUID id) {
+    public ItemStuff(UUID id) {
         mId = id;
         //!mLastSavedDate = new Date();
         mIsSeparator = false;

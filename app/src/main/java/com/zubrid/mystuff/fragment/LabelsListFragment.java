@@ -154,7 +154,7 @@ public class LabelsListFragment extends Fragment{
 
         //        @Override
 //        public void onBindViewHolder(ItemHolder holder, int pos) {
-//            Item item = mItems.get(pos);
+//            ItemStuff item = mItems.get(pos);
 //            holder.bindItem(item);
 //            Log.d(TAG, "binding crime" + item + "at position" + pos);
 //        }

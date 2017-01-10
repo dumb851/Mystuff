@@ -16,7 +16,7 @@ import android.view.View;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.fragment.ItemFragment;
 import com.zubrid.mystuff.lab.ItemLab;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -27,7 +27,7 @@ public class ItemPagerActivity extends AppCompatActivity
     private static final String TAG = "ItemPagerActivity_TAG";
     ViewPager mViewPager;
     FragmentStatePagerAdapter mPagerAdapter;
-    ArrayList<Item> mItems;
+    ArrayList<ItemStuff> mItemStuffs;
 
     public static ActivityOptions getTransition(Activity activity, View crimeView) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -56,22 +56,22 @@ public class ItemPagerActivity extends AppCompatActivity
         setContentView(mViewPager);
 
         if (itemId == null) {
-            mItems = new ArrayList<>();
-            mItems.add(new Item());
+            mItemStuffs = new ArrayList<>();
+            mItemStuffs.add(new ItemStuff());
         } else {
-            mItems = ItemLab.get(this).getWithoutSeparatorsItems();
+            mItemStuffs = ItemLab.get(this).getWithoutSeparatorsItems();
         }
 
         FragmentManager fm = getSupportFragmentManager();
         mPagerAdapter = new FragmentStatePagerAdapter(fm) {
             @Override
             public int getCount() {
-                return mItems.size();
+                return mItemStuffs.size();
             }
 
             @Override
             public Fragment getItem(int pos) {
-                UUID itemId = mItems.get(pos).getId();
+                UUID itemId = mItemStuffs.get(pos).getId();
                 return ItemFragment.newInstance(itemId);
             }
 
@@ -80,8 +80,8 @@ public class ItemPagerActivity extends AppCompatActivity
 
         mViewPager.setAdapter(mPagerAdapter);
 
-        for (int i = 0; i < mItems.size(); i++) {
-            if (mItems.get(i).getId().equals(itemId)) {
+        for (int i = 0; i < mItemStuffs.size(); i++) {
+            if (mItemStuffs.get(i).getId().equals(itemId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
@@ -98,7 +98,7 @@ public class ItemPagerActivity extends AppCompatActivity
     // Callback ItemFragment.ItemFragmentListener
     @Override
     public void addPage() {
-        mItems.add(new Item());
+        mItemStuffs.add(new ItemStuff());
         mPagerAdapter.notifyDataSetChanged();
     }
 }

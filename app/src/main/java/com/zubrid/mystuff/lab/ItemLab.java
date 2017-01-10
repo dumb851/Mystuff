@@ -9,7 +9,7 @@ import android.util.Log;
 import com.zubrid.mystuff.database.BaseHelper;
 import com.zubrid.mystuff.database.DbSchemas;
 import com.zubrid.mystuff.database.MyCursorWrapper;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,11 +36,11 @@ public class ItemLab {
         return sItemLab;
     }
 
-    public ArrayList<Item> getItems() {
+    public ArrayList<ItemStuff> getItems() {
 
         int orderNumber = 0;
 
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<ItemStuff> itemStuffs = new ArrayList<>();
 
         //! TODO hide deletionMarked
 //        String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_LABEL + " = ? AND "
@@ -56,9 +56,9 @@ public class ItemLab {
 
                 String firstLetter = "";
 
-                Item item = cursor.getItem();
+                ItemStuff itemStuff = cursor.getItem();
 
-                String title = item.getTitle();
+                String title = itemStuff.getTitle();
                 title = (title == null) ? "" : title;
 
                 if (title.length() > 0) {
@@ -66,17 +66,17 @@ public class ItemLab {
                 }
 
                 if (!firstLetter.equalsIgnoreCase(firstLetterOfLastItem)) {
-                    Item separator = new Item();
+                    ItemStuff separator = new ItemStuff();
                     separator.setTitle(firstLetter.toUpperCase());
                     separator.setIsSeparator(true);
                     separator.setOrderNumber(orderNumber++);
 
-                    items.add(separator);
+                    itemStuffs.add(separator);
                     firstLetterOfLastItem = firstLetter;
                 }
 
-                item.setOrderNumber(orderNumber++);
-                items.add(item);
+                itemStuff.setOrderNumber(orderNumber++);
+                itemStuffs.add(itemStuff);
 
 
                 cursor.moveToNext();
@@ -87,23 +87,23 @@ public class ItemLab {
             cursor.close();
         }
 
-        return items;
+        return itemStuffs;
     }
 
-    public ArrayList<Item> getWithoutSeparatorsItems() {
+    public ArrayList<ItemStuff> getWithoutSeparatorsItems() {
 
         int orderNumber = 0;
 
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<ItemStuff> itemStuffs = new ArrayList<>();
         MyCursorWrapper cursor = queryItems(null, null);
 
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
-                Item item = cursor.getItem();
-                item.setOrderNumber(orderNumber++);
-                items.add(item);
+                ItemStuff itemStuff = cursor.getItem();
+                itemStuff.setOrderNumber(orderNumber++);
+                itemStuffs.add(itemStuff);
 
                 cursor.moveToNext();
 
@@ -113,7 +113,7 @@ public class ItemLab {
             cursor.close();
         }
 
-        return items;
+        return itemStuffs;
     }
 
     private MyCursorWrapper queryItems(String whereClause, String[] whereArgs) {
@@ -133,15 +133,15 @@ public class ItemLab {
         return new MyCursorWrapper(cursor);
     }
 
-    public void addItem(Item item) {
+    public void addItem(ItemStuff itemStuff) {
 
-        ContentValues values = getContentValues(item);
+        ContentValues values = getContentValues(itemStuff);
         mDatabase.insert(DbSchemas.ItemsTable.NAME, null, values);
     }
 
-    public void deleteItem(Item item) {
+    public void deleteItem(ItemStuff itemStuff) {
 
-        deleteItemByUUID(item.getId());
+        deleteItemByUUID(itemStuff.getId());
 
     }
 
@@ -154,18 +154,18 @@ public class ItemLab {
 
     }
 
-    private static ContentValues getContentValues(Item item) {
+    private static ContentValues getContentValues(ItemStuff itemStuff) {
 
         ContentValues values = new ContentValues();
-        values.put(DbSchemas.ItemsTable.Cols.UUID, item.getId().toString());
-        values.put(DbSchemas.ItemsTable.Cols.TITLE, item.getTitle());
+        values.put(DbSchemas.ItemsTable.Cols.UUID, itemStuff.getId().toString());
+        values.put(DbSchemas.ItemsTable.Cols.TITLE, itemStuff.getTitle());
         values.put(DbSchemas.ItemsTable.Cols.DATE, new Date().getTime());
-        values.put(DbSchemas.ItemsTable.Cols.DELETION_MARK, item.getDeletionMark());
+        values.put(DbSchemas.ItemsTable.Cols.DELETION_MARK, itemStuff.getDeletionMark());
 
         return values;
     }
 
-    public Item getItem(UUID id) {
+    public ItemStuff getItem(UUID id) {
 
         MyCursorWrapper cursor = queryItems(
                 DbSchemas.ItemsTable.Cols.UUID + " =?",
@@ -186,10 +186,10 @@ public class ItemLab {
 
     }
 
-    public void updateItem(Item item) {
+    public void updateItem(ItemStuff itemStuff) {
 
-        String uuidString = item.getId().toString();
-        ContentValues values = getContentValues(item);
+        String uuidString = itemStuff.getId().toString();
+        ContentValues values = getContentValues(itemStuff);
 
         int result;
 
@@ -201,10 +201,10 @@ public class ItemLab {
         Log.i(TAG, "update result= " + result);
     }
 
-    public void moveItemToTrash(Item item) {
+    public void moveItemToTrash(ItemStuff itemStuff) {
 
-        item.setDeletionMark(true);
-        updateItem(item);
+        itemStuff.setDeletionMark(true);
+        updateItem(itemStuff);
 
     }
 

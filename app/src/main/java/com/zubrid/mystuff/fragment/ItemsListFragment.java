@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.ItemPagerActivity;
 import com.zubrid.mystuff.lab.ItemLab;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,7 +33,7 @@ public class ItemsListFragment extends Fragment {
     private ItemAdapter mAdapter;
     private RecyclerView mRecyclerView;
     //private MultiSelector mMultiSelector = new MultiSelector();
-    private ArrayList<Item> mItems;
+    private ArrayList<ItemStuff> mItemStuffs;
     private LinearLayoutManager mLinearLayoutManager;
 
     //private ModalMultiSelectorCallback mDeleteMode = new ModalMultiSelectorCallback(mMultiSelector) {
@@ -52,9 +52,9 @@ public class ItemsListFragment extends Fragment {
 //                // not after. No idea why, but it crashes.
 //                actionMode.finish();
 //
-//                for (int i = mItems.size(); i >= 0; i--) {
+//                for (int i = mItemStuffs.size(); i >= 0; i--) {
 //                    if (mMultiSelector.isSelected(i, 0)) {
-//                        Item item = mItems.get(i);
+//                        ItemStuff item = mItemStuffs.get(i);
 //                        ItemLab.get(getActivity()).deleteItem(item);
 //                        mRecyclerView.getAdapter().notifyItemRemoved(i);
 //                    }
@@ -121,7 +121,7 @@ public class ItemsListFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mItems = ItemLab.get(getActivity()).getItems();
+        mItemStuffs = ItemLab.get(getActivity()).getItems();
         mAdapter = new ItemAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
@@ -143,24 +143,24 @@ public class ItemsListFragment extends Fragment {
 
             if (data.hasExtra("changedItems")) {
 
-                mItems = ItemLab.get(getActivity()).getItems();
+                mItemStuffs = ItemLab.get(getActivity()).getItems();
 
                 ArrayList<UUID> changedItems = (ArrayList<UUID>) data.getSerializableExtra("changedItems");
 
                 for (UUID itemId : changedItems) {
 
-                    Item newItem = null;
-                    Item newSeparator = null;
+                    ItemStuff newItemStuff = null;
+                    ItemStuff newSeparator = null;
 
-                    for (Item item : mItems) {
-                        if (item.getId().equals(itemId)) {
-                            newItem = item;
+                    for (ItemStuff itemStuff : mItemStuffs) {
+                        if (itemStuff.getId().equals(itemId)) {
+                            newItemStuff = itemStuff;
 
-                            int index = mItems.indexOf(item);
+                            int index = mItemStuffs.indexOf(itemStuff);
                             if (index != 0) {
-                                Item itemBefore = mItems.get(index - 1);
-                                if (itemBefore.isSeparator()) {
-                                    newSeparator = itemBefore;
+                                ItemStuff itemStuffBefore = mItemStuffs.get(index - 1);
+                                if (itemStuffBefore.isSeparator()) {
+                                    newSeparator = itemStuffBefore;
                                 }
                             }
 
@@ -168,28 +168,28 @@ public class ItemsListFragment extends Fragment {
                         }
                     }
 
-                    if (newItem != null) {
+                    if (newItemStuff != null) {
                         if (newSeparator != null) {
                             mAdapter.notifyItemInserted(newSeparator);
                         }
 
-                        mAdapter.notifyItemInserted(newItem);
-                        mLinearLayoutManager.scrollToPosition(newItem.getOrderNumber());
+                        mAdapter.notifyItemInserted(newItemStuff);
+                        mLinearLayoutManager.scrollToPosition(newItemStuff.getOrderNumber());
                     }
                 }
             } else if (data.hasExtra(ItemFragment.EXTRA_DELETED_ITEM)) {
 
                 UUID deletedItemUUID = (UUID) data.getSerializableExtra(ItemFragment.EXTRA_DELETED_ITEM);
 
-                Item itemForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
+                ItemStuff itemStuffForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
 
-                for (Item item : mItems) {
-                    if (item.getId().equals(deletedItemUUID)) {
+                for (ItemStuff itemStuff : mItemStuffs) {
+                    if (itemStuff.getId().equals(deletedItemUUID)) {
 
-                        int orderNumber = item.getOrderNumber();
-                        mItems.remove(item);
+                        int orderNumber = itemStuff.getOrderNumber();
+                        mItemStuffs.remove(itemStuff);
 
-                        ItemLab.get(getActivity()).moveItemToTrash(itemForDeleting);
+                        ItemLab.get(getActivity()).moveItemToTrash(itemStuffForDeleting);
 
                         //!mAdapter.notifyItemRemoved(orderNumber);
                         break;
@@ -211,10 +211,10 @@ public class ItemsListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
 //        if (menuItem.getItemId() == R.id.menu_item_new_crime) {
-//            final Item item = new Item();
+//            final ItemStuff item = new ItemStuff();
 //            ItemLab.get(getActivity()).addItem(item);
 
-        //!mRecyclerView.getAdapter().notifyItemInserted(mItems.indexOf(item));
+        //!mRecyclerView.getAdapter().notifyItemInserted(mItemStuffs.indexOf(item));
 
         // NOTE: Left this code in for commentary. I believe this is what you would do
         // to wait until the new crime is added, then animate the selection of the new crime.
@@ -249,11 +249,11 @@ public class ItemsListFragment extends Fragment {
         return fragment;
     }
 
-    private void selectItem(Item item) {
+    private void selectItem(ItemStuff itemStuff) {
         // start an instance of CrimePagerActivity
 //!        Intent i = new Intent(getActivity(), ItemActivity.class);
-//        i.putExtra(ItemFragment.EXTRA_ITEM_ID, item.getId());
-        Intent intent = new ItemPagerActivity().newIntent(getContext(), item.getId());
+//        i.putExtra(ItemFragment.EXTRA_ITEM_ID, itemStuff.getId());
+        Intent intent = new ItemPagerActivity().newIntent(getContext(), itemStuff.getId());
 //            startActivity(intent);
 
         startActivityForResult(intent, 0);
@@ -264,7 +264,7 @@ public class ItemsListFragment extends Fragment {
 //            // startActivityForResult call. So to get this to work, the entire
 //            // project had to be shifted over to use stdlib fragments,
 //            // and the v13 ViewPager.
-//            int index = mItems.indexOf(item);
+//            int index = mItemStuffs.indexOf(itemStuff);
 //            ItemHolder holder = (ItemHolder) mRecyclerView
 //                    .findViewHolderForPosition(index);
 //
@@ -303,16 +303,16 @@ public class ItemsListFragment extends Fragment {
 
             holder.itemView.setEnabled(true);
 
-            Item item = mItems.get(position);
-            holder.bindItem(item);
+            ItemStuff itemStuff = mItemStuffs.get(position);
+            holder.bindItem(itemStuff);
 
         }
 
         @Override
         public int getItemViewType(int position) {
 
-            Item item = mItems.get(position);
-            if (item.isSeparator()) {
+            ItemStuff itemStuff = mItemStuffs.get(position);
+            if (itemStuff.isSeparator()) {
                 return VIEW_TYPE_SEPARATOR;
             }
 
@@ -322,24 +322,24 @@ public class ItemsListFragment extends Fragment {
 
         //        @Override
 //        public void onBindViewHolder(ItemHolder holder, int pos) {
-//            Item item = mItems.get(pos);
+//            ItemStuff item = mItemStuffs.get(pos);
 //            holder.bindItem(item);
 //            Log.d(TAG, "binding crime" + item + "at position" + pos);
 //        }
 
         @Override
         public int getItemCount() {
-            return mItems.size();
+            return mItemStuffs.size();
         }
 
-        public void notifyItemInserted(Item item) {
+        public void notifyItemInserted(ItemStuff itemStuff) {
 
-            notifyItemInserted(item.getOrderNumber());
+            notifyItemInserted(itemStuff.getOrderNumber());
         }
 
-        public void notifyItemRemoved(Item item) {
+        public void notifyItemRemoved(ItemStuff itemStuff) {
 
-            notifyItemRemoved(item.getOrderNumber());
+            notifyItemRemoved(itemStuff.getOrderNumber());
         }
 
     }
@@ -349,7 +349,7 @@ public class ItemsListFragment extends Fragment {
 
         private final TextView mTitleTextView;
         private final TextView mIdTextView;
-        private Item mItem;
+        private ItemStuff mItemStuff;
 
         public ItemHolder(View itemView, int viewType) {
             //!super(itemView, mMultiSelector);
@@ -386,14 +386,14 @@ public class ItemsListFragment extends Fragment {
 
         }
 
-        public void bindItem(Item item) {
-            mItem = item;
-            mTitleTextView.setText(item.getTitle());
-            if (!item.isSeparator()) {
-                mIdTextView.setText(item.getId().toString());
+        public void bindItem(ItemStuff itemStuff) {
+            mItemStuff = itemStuff;
+            mTitleTextView.setText(itemStuff.getTitle());
+            if (!itemStuff.isSeparator()) {
+                mIdTextView.setText(itemStuff.getId().toString());
             }
 
-            //!mSolvedCheckBox.setChecked(item.isSolved());
+            //!mSolvedCheckBox.setChecked(itemStuff.isSolved());
         }
 
         //
@@ -402,11 +402,11 @@ public class ItemsListFragment extends Fragment {
 
             //Snackbar.make(v, "onClick", Snackbar.LENGTH_SHORT).show();
 
-            if (mItem == null) {
+            if (mItemStuff == null) {
                 return;
             }
 
-            selectItem(mItem);
+            selectItem(mItemStuff);
 
         }
 

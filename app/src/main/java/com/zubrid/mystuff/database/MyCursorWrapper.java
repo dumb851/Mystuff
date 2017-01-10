@@ -2,7 +2,7 @@ package com.zubrid.mystuff.database;
 
 import android.database.Cursor;
 
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 
@@ -15,19 +15,19 @@ public class MyCursorWrapper extends android.database.CursorWrapper {
         super(cursor);
     }
 
-    public Item getItem() {
+    public ItemStuff getItem() {
 
         String uuidString = getString(getColumnIndex(DbSchemas.ItemsTable.Cols.UUID));
         String title = getString(getColumnIndex(DbSchemas.ItemsTable.Cols.TITLE));
         long lastSavedDate = getLong(getColumnIndex(DbSchemas.ItemsTable.Cols.DATE));
         int deletionMark = getInt(getColumnIndex(DbSchemas.ItemsTable.Cols.DELETION_MARK));
 
-        Item item = new Item(UUID.fromString(uuidString));
-        item.setTitle(title);
-        item.setLastSavedDate(new Date(lastSavedDate));
-        item.setDeletionMark(deletionMark);
+        ItemStuff itemStuff = new ItemStuff(UUID.fromString(uuidString));
+        itemStuff.setTitle(title);
+        itemStuff.setLastSavedDate(new Date(lastSavedDate));
+        itemStuff.setDeletionMark(deletionMark);
 
-        return item;
+        return itemStuff;
     }
 
     public ItemLabel getItemWithLabel() {

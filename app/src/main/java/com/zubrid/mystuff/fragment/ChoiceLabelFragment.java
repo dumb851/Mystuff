@@ -24,7 +24,7 @@ import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.ItemLabel;
 import com.zubrid.mystuff.model.Label;
 
@@ -38,7 +38,7 @@ public class ChoiceLabelFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArrayList<ChoiceItem> mAllLabels = new ArrayList<>();
     private ArrayList<ChoiceItem> mChangedLabels = new ArrayList<>();
-    private Item mItem;
+    private ItemStuff mItemStuff;
 
     public static ChoiceLabelFragment newInstance() {
 //        Bundle args = new Bundle();
@@ -57,7 +57,7 @@ public class ChoiceLabelFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         UUID itemId = (UUID) intent.getSerializableExtra(ChoiceLabelFragment.EXTRA_ITEM_ID);
 
-        mItem = ItemLab.get(getActivity()).getItem(itemId);
+        mItemStuff = ItemLab.get(getActivity()).getItem(itemId);
 
     }
 
@@ -73,7 +73,7 @@ public class ChoiceLabelFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         ArrayList<Label> allLabels = LabelLab.get(getActivity()).getLabels(false);
-        ArrayList<ItemLabel> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItem);
+        ArrayList<ItemLabel> labelsByItem = ItemLabelsLab.get(getActivity()).getLabelsByItem(mItemStuff);
 
         ArrayList<UUID> checkedLabelsUUID = new ArrayList<>();
 

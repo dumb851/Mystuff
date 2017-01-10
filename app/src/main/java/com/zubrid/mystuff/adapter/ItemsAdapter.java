@@ -9,34 +9,34 @@ import android.widget.TextView;
 
 import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.R;
-import com.zubrid.mystuff.model.Item;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.iItemList;
 
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    //!List<iItemList> items = new ArrayList<>();
-    List<Item> items;
+    //!List<iItemList> mItemStuffs = new ArrayList<>();
+    List<ItemStuff> mItemStuffs;
 
     public static final int TYPE_ITEM = 0;
     public static final int TYPE_SEPARATOR = 1;
 
     public ItemsAdapter(Context context) {
-        items = ItemLab.get(context).getItems();
+        mItemStuffs = ItemLab.get(context).getItems();
     }
 
     public iItemList getItem(int position) {
-        return items.get(position);
+        return mItemStuffs.get(position);
     }
 
-    public void addItem(Item item) {
-        items.add(item);
+    public void addItem(ItemStuff itemStuff) {
+        mItemStuffs.add(itemStuff);
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public void addItem(int position, Item item) {
-        items.add(item);
+    public void addItem(int position, ItemStuff itemStuff) {
+        mItemStuffs.add(itemStuff);
         notifyItemInserted(position);
     }
 
@@ -63,12 +63,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        iItemList item = items.get(position);
+        iItemList item = mItemStuffs.get(position);
 
         if (!item.isSeparator()) {
             holder.itemView.setEnabled(true);
 
-            Item task = (Item) item;
+            ItemStuff task = (ItemStuff) item;
 
             TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
 
@@ -79,7 +79,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return mItemStuffs.size();
     }
 
     @Override
