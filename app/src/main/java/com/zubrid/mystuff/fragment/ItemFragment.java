@@ -84,6 +84,8 @@ public class ItemFragment extends Fragment {
 
     //endregion
 
+    //changes for new branch
+
     //! TODO GridView для отображения меток!
 
     public static ItemFragment newInstance(UUID itemId) {
