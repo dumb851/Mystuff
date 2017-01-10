@@ -44,7 +44,10 @@ import com.zubrid.mystuff.utils.FlowLayout;
 import com.zubrid.mystuff.utils.PictureUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import static com.zubrid.mystuff.R.layout.item;
@@ -77,6 +80,8 @@ public class ItemFragment extends Fragment {
     private LabelAdapter mLabelAdapter;
     private FlowLayout mLabelsFlowLayout;
     private LayoutInflater mLayoutInflater;
+    private TextView mSavedTime;
+
     //endregion
 
     //! TODO GridView для отображения меток!
@@ -134,7 +139,6 @@ public class ItemFragment extends Fragment {
         mLayoutInflater = inflater;
 
         mTitleField = (EditText) view.findViewById(R.id.item_title_text_edit);
-
         mTitleField.setText(mItem.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -154,11 +158,13 @@ public class ItemFragment extends Fragment {
             }
         });
 
+        mSavedTime = (TextView) view.findViewById(R.id.item_saved_time);
+
         mIdView = (TextView) view.findViewById(R.id.item_id_text_view);
         mIdView.setText(mItem.getId().toString());
 
-        mLastSaved = (TextView) view.findViewById(R.id.item_last_saved_text_view);
-        mLastSaved.setText(mItem.getLastSavedDate().toString());
+//!        mLastSaved = (TextView) view.findViewById(R.id.item_last_saved_text_view);
+//        mLastSaved.setText(mItem.getLastSavedDate().toString());
 
         if (mIsNewItem) {
             LinearLayout fakeLayout = (LinearLayout) view.findViewById(R.id.item_fake_layout);
@@ -168,6 +174,8 @@ public class ItemFragment extends Fragment {
         fillLabels();
 
         configureLabelsView(view);
+
+        updateSavedTime();
 
 
         Button buttonOpenLabels = (Button) view.findViewById(R.id.button_open_labels);
@@ -356,6 +364,23 @@ public class ItemFragment extends Fragment {
         }
     }
 
+    private void updateSavedTime() {
+
+        //! TODO make format string
+        Date savedDate = mItem.getLastSavedDate();
+
+        if (savedDate == null) {
+            mSavedTime.setText(R.string.not_saved);
+        } else {
+
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss dd.M.yyyy ", Locale.ENGLISH);
+            String DateToStr = format.format(savedDate);
+
+            mSavedTime.setText(DateToStr);
+        }
+
+    }
+
     private void updateItem() {
 
         if (mIsNewItem) {
@@ -381,8 +406,10 @@ public class ItemFragment extends Fragment {
         getActivity().setResult(Activity.RESULT_OK, intent);
 
         mItem = ItemLab.get(getActivity()).getItem(mItem.getId());
-        mLastSaved.setText(mItem.getLastSavedDate().toString());
-        Log.i("setLastSaved", mItem.getLastSavedDate().toString());
+//!        mLastSaved.setText(mItem.getLastSavedDate().toString());
+//        Log.i("setLastSaved", mItem.getLastSavedDate().toString());
+
+        updateSavedTime();
     }
 
     private void addPage() {

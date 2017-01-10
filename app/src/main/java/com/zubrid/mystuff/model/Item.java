@@ -9,7 +9,7 @@ public class Item implements iItemList{
     private UUID mId;
     private String mTitle;
     private String mDescription;
-    private Date mLastSavedDate;
+    private Date mLastSavedDate = null;
     private List<Label> mLabels;
     private int orderNumber;
     private boolean mIsSeparator;
@@ -53,7 +53,7 @@ public class Item implements iItemList{
 
     public Item(UUID id) {
         mId = id;
-        mLastSavedDate = new Date();
+        //!mLastSavedDate = new Date();
         mIsSeparator = false;
     }
 
