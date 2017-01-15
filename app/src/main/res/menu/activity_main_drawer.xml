@@ -2,39 +2,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <itemStuff
+        <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/drawer_home"/>
-        <itemStuff
+        <item
             android:id="@+id/nav_items"
             android:icon="@drawable/ic_reorder_black_24dp"
             android:title="@string/drawer_items"/>
-        <itemStuff
+        <item
             android:id="@+id/nav_places"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/drawer_places"/>
-        <itemStuff
+        <item
             android:id="@+id/nav_labels"
             android:icon="@drawable/ic_label_black_24dp"
             android:title="@string/drawer_labels"/>
-        <itemStuff
+        <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Tools"/>
     </group>
 
-    <itemStuff android:title="Communicate">
+    <item android:title="Communicate">
         <menu>
-            <itemStuff
+            <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share"/>
-            <itemStuff
+            <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send"/>
         </menu>
-    </itemStuff>
+    </item>
 
 </menu>

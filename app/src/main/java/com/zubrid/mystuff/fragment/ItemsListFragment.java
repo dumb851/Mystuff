@@ -152,26 +152,36 @@ public class ItemsListFragment extends Fragment {
                     ItemStuff newItemStuff = null;
                     ItemStuff newSeparator = null;
 
+                    ItemStuff changedItem = null;
+
                     for (ItemStuff itemStuff : mItemStuffs) {
                         if (itemStuff.getId().equals(itemId)) {
-                            newItemStuff = itemStuff;
 
-                            int index = mItemStuffs.indexOf(itemStuff);
-                            if (index != 0) {
-                                ItemStuff itemStuffBefore = mItemStuffs.get(index - 1);
-                                if (itemStuffBefore.isSeparator()) {
-                                    newSeparator = itemStuffBefore;
-                                }
-                            }
+                            changedItem = itemStuff;
+
+                            //int index = mItemStuffs.indexOf(itemStuff);
+//                            if (index != 0) {
+//                                ItemStuff itemStuffBefore = mItemStuffs.get(index - 1);
+//                                if (itemStuffBefore.isSeparator()) {
+//                                    newSeparator = itemStuffBefore;
+//                                }
+//                            }
 
                             break;
                         }
                     }
 
+                    if (changedItem != null) {
+
+                        mAdapter.notifyItemChanged(changedItem.getOrderNumber());
+
+                    }
+
+
                     if (newItemStuff != null) {
-                        if (newSeparator != null) {
-                            mAdapter.notifyItemInserted(newSeparator);
-                        }
+//                        if (newSeparator != null) {
+//                            mAdapter.notifyItemInserted(newSeparator);
+//                        }
 
                         mAdapter.notifyItemInserted(newItemStuff);
                         mLinearLayoutManager.scrollToPosition(newItemStuff.getOrderNumber());
@@ -344,12 +354,14 @@ public class ItemsListFragment extends Fragment {
 
     }
 
-    private class ItemHolder extends RecyclerView.ViewHolder implements
+    private static class ItemHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, View.OnLongClickListener {
 
         private final TextView mTitleTextView;
+        private final TextView mSeparatoTextView;
         private final TextView mIdTextView;
         private ItemStuff mItemStuff;
+
 
         public ItemHolder(View itemView, int viewType) {
             //!super(itemView, mMultiSelector);
@@ -360,11 +372,13 @@ public class ItemsListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.separator_title);
                 mIdTextView = null;
-
+                mSeparatoTextView = null;
             } else {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.item_list_title_text_view);
                 mIdTextView = (TextView) itemView.findViewById(R.id.item_list_id_text_view);
+                mSeparatoTextView = (TextView) itemView.findViewById(R.id.separator_text_view);
+
 
                 itemView.setOnClickListener(this);
                 //itemView.getId();
@@ -393,7 +407,13 @@ public class ItemsListFragment extends Fragment {
                 mIdTextView.setText(itemStuff.getId().toString());
             }
 
-            //!mSolvedCheckBox.setChecked(itemStuff.isSolved());
+            if (mSeparatoTextView != null) {
+                mSeparatoTextView.setVisibility(View.GONE);
+            }
+
+            if (itemStuff.getTitle().equalsIgnoreCase("test")) {
+                mSeparatoTextView.setVisibility(View.VISIBLE);
+            }
         }
 
         //
@@ -406,7 +426,7 @@ public class ItemsListFragment extends Fragment {
                 return;
             }
 
-            selectItem(mItemStuff);
+            //!selectItem(mItemStuff);
 
         }
 

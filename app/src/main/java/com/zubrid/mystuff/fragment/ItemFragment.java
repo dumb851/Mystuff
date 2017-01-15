@@ -37,8 +37,8 @@ import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
 import com.zubrid.mystuff.model.Image;
-import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.ItemLabel;
+import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.Label;
 import com.zubrid.mystuff.utils.FlowLayout;
 import com.zubrid.mystuff.utils.PictureUtils;
@@ -49,8 +49,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-
-import static com.zubrid.mystuff.R.layout.item;
 
 public class ItemFragment extends Fragment {
 
@@ -136,7 +134,7 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(item, container, false);
+        View view = inflater.inflate(R.layout.stuff_item, container, false);
 
         mLayoutInflater = inflater;
 
