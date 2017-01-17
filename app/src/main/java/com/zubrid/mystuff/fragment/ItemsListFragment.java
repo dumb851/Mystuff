@@ -314,6 +314,29 @@ public class ItemsListFragment extends Fragment {
             holder.itemView.setEnabled(true);
 
             ItemStuff itemStuff = mItemStuffs.get(position);
+
+            boolean showSeparator = false;
+
+            if (position == 0) {
+                showSeparator = true;
+            } else {
+                ItemStuff itemStuffBefore = mItemStuffs.get(position - 1);
+
+                if (!itemStuff.getTitleFirstLetter().equalsIgnoreCase(
+                        itemStuffBefore.getTitleFirstLetter())) {
+                    showSeparator = true;
+                }
+            }
+
+            if (showSeparator) {
+
+                holder.setSeparatorVisible();
+
+            } else {
+                holder.setSeparatorGone();
+
+            }
+
             holder.bindItem(itemStuff);
 
         }
@@ -354,11 +377,11 @@ public class ItemsListFragment extends Fragment {
 
     }
 
-    private static class ItemHolder extends RecyclerView.ViewHolder implements
+    private class ItemHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, View.OnLongClickListener {
 
         private final TextView mTitleTextView;
-        private final TextView mSeparatoTextView;
+        private final TextView mSeparatorTextView;
         private final TextView mIdTextView;
         private ItemStuff mItemStuff;
 
@@ -372,12 +395,12 @@ public class ItemsListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.separator_title);
                 mIdTextView = null;
-                mSeparatoTextView = null;
+                mSeparatorTextView = null;
             } else {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.item_list_title_text_view);
                 mIdTextView = (TextView) itemView.findViewById(R.id.item_list_id_text_view);
-                mSeparatoTextView = (TextView) itemView.findViewById(R.id.separator_text_view);
+                mSeparatorTextView = (TextView) itemView.findViewById(R.id.separator_text_view);
 
 
                 itemView.setOnClickListener(this);
@@ -401,19 +424,40 @@ public class ItemsListFragment extends Fragment {
         }
 
         public void bindItem(ItemStuff itemStuff) {
+
             mItemStuff = itemStuff;
             mTitleTextView.setText(itemStuff.getTitle());
-            if (!itemStuff.isSeparator()) {
-                mIdTextView.setText(itemStuff.getId().toString());
+
+            mSeparatorTextView.setText(itemStuff.getTitleFirstLetter().toUpperCase());
+
+            mIdTextView.setText(itemStuff.getId().toString());
+
+
+//            if (mSeparatorTextView != null) {
+//                mSeparatorTextView.setVisibility(View.GONE);
+//            }
+//
+//            if (itemStuff.getTitle().equalsIgnoreCase("test")) {
+//                mSeparatorTextView.setVisibility(View.VISIBLE);
+//            }
+        }
+
+        void setSeparatorGone() {
+
+            if (mSeparatorTextView != null) {
+                mSeparatorTextView.setVisibility(View.GONE);
+
             }
 
-            if (mSeparatoTextView != null) {
-                mSeparatoTextView.setVisibility(View.GONE);
+        }
+
+        void setSeparatorVisible() {
+
+            if (mSeparatorTextView != null) {
+                mSeparatorTextView.setVisibility(View.VISIBLE);
+
             }
 
-            if (itemStuff.getTitle().equalsIgnoreCase("test")) {
-                mSeparatoTextView.setVisibility(View.VISIBLE);
-            }
         }
 
         //
@@ -426,7 +470,7 @@ public class ItemsListFragment extends Fragment {
                 return;
             }
 
-            //!selectItem(mItemStuff);
+            selectItem(mItemStuff);
 
         }
 

@@ -38,59 +38,7 @@ public class ItemLab {
 
     public ArrayList<ItemStuff> getItems() {
 
-        int orderNumber = 0;
-
-        ArrayList<ItemStuff> itemStuffs = new ArrayList<>();
-
         //! TODO hide deletionMarked
-//        String whereClause = DbSchemas.ItemLabelsTable.Cols.UUID_LABEL + " = ? AND "
-//                + DbSchemas.ItemLabelsTable.Cols.UUID_ITEM + " = ?";
-
-        MyCursorWrapper cursor = queryItems(null, null);
-
-        String firstLetterOfLastItem  = "";
-
-        try {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-
-                String firstLetter = "";
-
-                ItemStuff itemStuff = cursor.getItem();
-
-                String title = itemStuff.getTitle();
-                title = (title == null) ? "" : title;
-
-                if (title.length() > 0) {
-                    firstLetter = String.valueOf(title.charAt(0));
-                }
-
-                if (!firstLetter.equalsIgnoreCase(firstLetterOfLastItem)) {
-                    ItemStuff separator = new ItemStuff();
-                    separator.setTitle(firstLetter.toUpperCase());
-                    separator.setIsSeparator(true);
-                    separator.setOrderNumber(orderNumber++);
-
-                    itemStuffs.add(separator);
-                    firstLetterOfLastItem = firstLetter;
-                }
-
-                itemStuff.setOrderNumber(orderNumber++);
-                itemStuffs.add(itemStuff);
-
-
-                cursor.moveToNext();
-
-            }
-
-        } finally {
-            cursor.close();
-        }
-
-        return itemStuffs;
-    }
-
-    public ArrayList<ItemStuff> getWithoutSeparatorsItems() {
 
         int orderNumber = 0;
 
@@ -114,7 +62,9 @@ public class ItemLab {
         }
 
         return itemStuffs;
+
     }
+
 
     private MyCursorWrapper queryItems(String whereClause, String[] whereArgs) {
 

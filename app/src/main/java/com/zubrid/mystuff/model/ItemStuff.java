@@ -104,4 +104,16 @@ public class ItemStuff implements iItemList{
     public int getOrderNumber() {
         return orderNumber;
     }
+
+    public String getTitleFirstLetter() {
+
+        String firstLetter;
+        if (mTitle == null || mTitle.length() == 0) {
+            firstLetter = "";
+        } else {
+            firstLetter = String.valueOf(mTitle.charAt(0));
+        }
+
+        return firstLetter;
+    }
 }

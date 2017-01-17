@@ -59,7 +59,7 @@ public class ItemPagerActivity extends AppCompatActivity
             mItemStuffs = new ArrayList<>();
             mItemStuffs.add(new ItemStuff());
         } else {
-            mItemStuffs = ItemLab.get(this).getWithoutSeparatorsItems();
+            mItemStuffs = ItemLab.get(this).getItems();
         }
 
         FragmentManager fm = getSupportFragmentManager();
