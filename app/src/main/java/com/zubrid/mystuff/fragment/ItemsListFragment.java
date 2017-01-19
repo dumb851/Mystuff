@@ -1,6 +1,5 @@
 package com.zubrid.mystuff.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +22,6 @@ import com.zubrid.mystuff.lab.ItemLab;
 import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class ItemsListFragment extends Fragment {
 
@@ -137,76 +135,81 @@ public class ItemsListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //if (requestCode == INTENT_NEW_ITEM) {
+        //! old code
+        // if (requestCode == INTENT_NEW_ITEM) {
 
-        if (resultCode == Activity.RESULT_OK) {
-
-            if (data.hasExtra("changedItems")) {
-
-                mItemStuffs = ItemLab.get(getActivity()).getItems();
-
-                ArrayList<UUID> changedItems = (ArrayList<UUID>) data.getSerializableExtra("changedItems");
-
-                for (UUID itemId : changedItems) {
-
-                    ItemStuff newItemStuff = null;
-                    ItemStuff newSeparator = null;
-
-                    ItemStuff changedItem = null;
-
-                    for (ItemStuff itemStuff : mItemStuffs) {
-                        if (itemStuff.getId().equals(itemId)) {
-
-                            changedItem = itemStuff;
-
-                            //int index = mItemStuffs.indexOf(itemStuff);
-//                            if (index != 0) {
-//                                ItemStuff itemStuffBefore = mItemStuffs.get(index - 1);
-//                                if (itemStuffBefore.isSeparator()) {
-//                                    newSeparator = itemStuffBefore;
-//                                }
-//                            }
-
-                            break;
-                        }
-                    }
-
-                    if (changedItem != null) {
-
-                        mAdapter.notifyItemChanged(changedItem.getOrderNumber());
-
-                    }
-
-
-                    if (newItemStuff != null) {
-//                        if (newSeparator != null) {
-//                            mAdapter.notifyItemInserted(newSeparator);
+//        if (resultCode == Activity.RESULT_OK) {
+//
+//            if (data.hasExtra("changedItems")) {
+//
+//                mItemStuffs = ItemLab.get(getActivity()).getItems();
+//
+//                ArrayList<UUID> changedItems = (ArrayList<UUID>) data.getSerializableExtra("changedItems");
+//
+//                for (UUID itemId : changedItems) {
+//
+//                    ItemStuff newItemStuff = null;
+//                    ItemStuff newSeparator = null;
+//
+//                    ItemStuff changedItem = null;
+//
+//                    for (ItemStuff itemStuff : mItemStuffs) {
+//                        if (itemStuff.getId().equals(itemId)) {
+//
+//                            changedItem = itemStuff;
+//
+//                            //int index = mItemStuffs.indexOf(itemStuff);
+////                            if (index != 0) {
+////                                ItemStuff itemStuffBefore = mItemStuffs.get(index - 1);
+////                                if (itemStuffBefore.isSeparator()) {
+////                                    newSeparator = itemStuffBefore;
+////                                }
+////                            }
+//
+//                            break;
 //                        }
+//                    }
+//
+//                    if (changedItem != null) {
+//
+//                        mAdapter.notifyItemChanged(changedItem.getOrderNumber());
+//
+//                    }
+//
+//
+//                    if (newItemStuff != null) {
+////                        if (newSeparator != null) {
+////                            mAdapter.notifyItemInserted(newSeparator);
+////                        }
+//
+//                        mAdapter.notifyItemInserted(newItemStuff);
+//                        mLinearLayoutManager.scrollToPosition(newItemStuff.getOrderNumber());
+//                    }
+//                }
+//
+//            } else if (data.hasExtra(ItemFragment.EXTRA_DELETED_ITEM)) {
+//
+//                UUID deletedItemUUID = (UUID) data.getSerializableExtra(ItemFragment.EXTRA_DELETED_ITEM);
+//
+//                ItemStuff itemStuffForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
+//
+//                for (ItemStuff itemStuff : mItemStuffs) {
+//                    if (itemStuff.getId().equals(deletedItemUUID)) {
+//
+//                        int orderNumber = itemStuff.getOrderNumber();
+//                        mItemStuffs.remove(itemStuff);
+//
+//                        ItemLab.get(getActivity()).moveItemToTrash(itemStuffForDeleting);
+//
+//                        //!mAdapter.notifyItemRemoved(orderNumber);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
 
-                        mAdapter.notifyItemInserted(newItemStuff);
-                        mLinearLayoutManager.scrollToPosition(newItemStuff.getOrderNumber());
-                    }
-                }
-            } else if (data.hasExtra(ItemFragment.EXTRA_DELETED_ITEM)) {
-
-                UUID deletedItemUUID = (UUID) data.getSerializableExtra(ItemFragment.EXTRA_DELETED_ITEM);
-
-                ItemStuff itemStuffForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
-
-                for (ItemStuff itemStuff : mItemStuffs) {
-                    if (itemStuff.getId().equals(deletedItemUUID)) {
-
-                        int orderNumber = itemStuff.getOrderNumber();
-                        mItemStuffs.remove(itemStuff);
-
-                        ItemLab.get(getActivity()).moveItemToTrash(itemStuffForDeleting);
-
-                        //!mAdapter.notifyItemRemoved(orderNumber);
-                        break;
-                    }
-                }
-            }
-        }
+        mItemStuffs = ItemLab.get(getActivity()).getItems();
+        mAdapter.updateList();
     }
 
     @Override
@@ -307,6 +310,12 @@ public class ItemsListFragment extends Fragment {
             return new ItemHolder(view, viewType);
 
         }
+
+        public void updateList() {
+
+            notifyDataSetChanged();
+        }
+
 
         @Override
         public void onBindViewHolder(ItemHolder holder, int position) {
