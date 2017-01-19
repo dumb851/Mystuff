@@ -151,7 +151,7 @@ public class LabelFragment extends Fragment{
                 intent.putExtra("itemId", mLabel.getId().toString());
                 getActivity().setResult(Activity.RESULT_OK, intent);
 
-                //!ItemLab.get(getActivity()).deleteItem(mItem);
+                //!ItemStuffLab.get(getActivity()).deleteItem(mItem);
                 getActivity().finish();
                 return true;
             default:

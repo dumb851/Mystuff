@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.ItemPagerActivity;
-import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemStuffLab;
 import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class ItemsListFragment extends Fragment {
 //                for (int i = mItemStuffs.size(); i >= 0; i--) {
 //                    if (mMultiSelector.isSelected(i, 0)) {
 //                        ItemStuff item = mItemStuffs.get(i);
-//                        ItemLab.get(getActivity()).deleteItem(item);
+//                        ItemStuffLab.get(getActivity()).deleteItem(item);
 //                        mRecyclerView.getAdapter().notifyItemRemoved(i);
 //                    }
 //                }
@@ -119,7 +119,7 @@ public class ItemsListFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mItemStuffs = ItemLab.get(getActivity()).getItems();
+        mItemStuffs = ItemStuffLab.get(getActivity()).getItems();
         mAdapter = new ItemAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
@@ -142,7 +142,7 @@ public class ItemsListFragment extends Fragment {
 //
 //            if (data.hasExtra("changedItems")) {
 //
-//                mItemStuffs = ItemLab.get(getActivity()).getItems();
+//                mItemStuffs = ItemStuffLab.get(getActivity()).getItems();
 //
 //                ArrayList<UUID> changedItems = (ArrayList<UUID>) data.getSerializableExtra("changedItems");
 //
@@ -191,7 +191,7 @@ public class ItemsListFragment extends Fragment {
 //
 //                UUID deletedItemUUID = (UUID) data.getSerializableExtra(ItemFragment.EXTRA_DELETED_ITEM);
 //
-//                ItemStuff itemStuffForDeleting = ItemLab.get(getActivity()).getItem(deletedItemUUID);
+//                ItemStuff itemStuffForDeleting = ItemStuffLab.get(getActivity()).getItem(deletedItemUUID);
 //
 //                for (ItemStuff itemStuff : mItemStuffs) {
 //                    if (itemStuff.getId().equals(deletedItemUUID)) {
@@ -199,7 +199,7 @@ public class ItemsListFragment extends Fragment {
 //                        int orderNumber = itemStuff.getOrderNumber();
 //                        mItemStuffs.remove(itemStuff);
 //
-//                        ItemLab.get(getActivity()).moveItemToTrash(itemStuffForDeleting);
+//                        ItemStuffLab.get(getActivity()).moveItemToTrash(itemStuffForDeleting);
 //
 //                        //!mAdapter.notifyItemRemoved(orderNumber);
 //                        break;
@@ -208,7 +208,7 @@ public class ItemsListFragment extends Fragment {
 //            }
 //        }
 
-        mItemStuffs = ItemLab.get(getActivity()).getItems();
+        mItemStuffs = ItemStuffLab.get(getActivity()).getItems();
         mAdapter.updateList();
     }
 
@@ -225,7 +225,7 @@ public class ItemsListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
 //        if (menuItem.getItemId() == R.id.menu_item_new_crime) {
 //            final ItemStuff item = new ItemStuff();
-//            ItemLab.get(getActivity()).addItem(item);
+//            ItemStuffLab.get(getActivity()).addItem(item);
 
         //!mRecyclerView.getAdapter().notifyItemInserted(mItemStuffs.indexOf(item));
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemStuffLab;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.model.ItemStuff;
 import com.zubrid.mystuff.model.iItemList;
@@ -23,7 +23,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int TYPE_SEPARATOR = 1;
 
     public ItemsAdapter(Context context) {
-        mItemStuffs = ItemLab.get(context).getItems();
+        mItemStuffs = ItemStuffLab.get(context).getItems();
     }
 
     public iItemList getItem(int position) {

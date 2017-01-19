@@ -20,7 +20,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.zubrid.mystuff.R;
-import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemStuffLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
@@ -57,7 +57,7 @@ public class ChoiceLabelFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         UUID itemId = (UUID) intent.getSerializableExtra(ChoiceLabelFragment.EXTRA_ITEM_ID);
 
-        mItemStuff = ItemLab.get(getActivity()).getItem(itemId);
+        mItemStuff = ItemStuffLab.get(getActivity()).getItem(itemId);
 
     }
 

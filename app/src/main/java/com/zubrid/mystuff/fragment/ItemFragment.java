@@ -32,7 +32,7 @@ import android.widget.TextView;
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.activity.ChoiceLabelActivity;
 import com.zubrid.mystuff.activity.FlowLayouDemo;
-import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemStuffLab;
 import com.zubrid.mystuff.lab.ItemLabelsLab;
 import com.zubrid.mystuff.lab.LabelLab;
 import com.zubrid.mystuff.model.ChoiceItem;
@@ -111,7 +111,7 @@ public class ItemFragment extends Fragment {
             mItemStuff = new ItemStuff();
             mIsNewItem = true;
         } else {
-            mItemStuff = ItemLab.get(getActivity()).getItem(itemId);
+            mItemStuff = ItemStuffLab.get(getActivity()).getItem(itemId);
             if (mItemStuff == null) {
                 mItemStuff = new ItemStuff(itemId);
                 mIsNewItem = true;
@@ -385,11 +385,11 @@ public class ItemFragment extends Fragment {
 
         if (mIsNewItem) {
 
-            ItemLab.get(getActivity()).addItem(mItemStuff);
+            ItemStuffLab.get(getActivity()).addItem(mItemStuff);
             mIsNewItem = false;
 
         } else {
-            ItemLab.get(getActivity()).updateItem(mItemStuff);
+            ItemStuffLab.get(getActivity()).updateItem(mItemStuff);
 
         }
 
@@ -405,7 +405,7 @@ public class ItemFragment extends Fragment {
         intent.putExtra("changedItems", mChangedItems);
         getActivity().setResult(Activity.RESULT_OK, intent);
 
-        mItemStuff = ItemLab.get(getActivity()).getItem(mItemStuff.getId());
+        mItemStuff = ItemStuffLab.get(getActivity()).getItem(mItemStuff.getId());
 //!        mLastSaved.setText(mItemStuff.getLastSavedDate().toString());
 //        Log.i("setLastSaved", mItemStuff.getLastSavedDate().toString());
 

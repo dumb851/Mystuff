@@ -15,7 +15,7 @@ import android.view.View;
 
 import com.zubrid.mystuff.R;
 import com.zubrid.mystuff.fragment.ItemFragment;
-import com.zubrid.mystuff.lab.ItemLab;
+import com.zubrid.mystuff.lab.ItemStuffLab;
 import com.zubrid.mystuff.model.ItemStuff;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class ItemPagerActivity extends AppCompatActivity
             mItemStuffs = new ArrayList<>();
             mItemStuffs.add(new ItemStuff());
         } else {
-            mItemStuffs = ItemLab.get(this).getItems();
+            mItemStuffs = ItemStuffLab.get(this).getItems();
         }
 
         FragmentManager fm = getSupportFragmentManager();

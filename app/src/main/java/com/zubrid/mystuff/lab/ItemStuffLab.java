@@ -15,25 +15,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class ItemLab {
+public class ItemStuffLab {
 
-    public static final String TAG = "ItemLab";
-    private static ItemLab sItemLab;
+    public static final String TAG = "ItemStuffLab";
+    private static ItemStuffLab sItemStuffLab;
 
     private SQLiteDatabase mDatabase;
 
-    private ItemLab(Context context) {
+    private ItemStuffLab(Context context) {
 
         mDatabase = new BaseHelper(context).getWritableDatabase();
 
     }
 
-    public static ItemLab get(Context context) {
+    public static ItemStuffLab get(Context context) {
 
-        if (sItemLab == null) {
-            sItemLab = new ItemLab(context);
+        if (sItemStuffLab == null) {
+            sItemStuffLab = new ItemStuffLab(context);
         }
-        return sItemLab;
+        return sItemStuffLab;
     }
 
     public ArrayList<ItemStuff> getItems() {
