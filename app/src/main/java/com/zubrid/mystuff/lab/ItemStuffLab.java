@@ -68,7 +68,7 @@ public class ItemStuffLab {
 
     private MyCursorWrapper queryItems(String whereClause, String[] whereArgs) {
 
-        String orderBy = DbSchemas.ItemsTable.Cols.TITLE;
+        String orderBy = DbSchemas.ItemsTable.Cols.TITLE  + " COLLATE NOCASE ASC";
 
         Cursor cursor = mDatabase.query(
                 DbSchemas.ItemsTable.NAME,
