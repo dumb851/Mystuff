@@ -43,7 +43,14 @@ public class ItemStuffLab {
         int orderNumber = 0;
 
         ArrayList<ItemStuff> itemStuffs = new ArrayList<>();
-        MyCursorWrapper cursor = queryItems(null, null);
+
+        String whereClause = DbSchemas.ItemsTable.Cols.DELETION_MARK + " = ?";
+
+        String[] whereArgs = {Integer.toString(1)};
+
+        MyCursorWrapper cursor = queryItems(whereClause, whereArgs);
+
+       // MyCursorWrapper cursor = queryItems(null, null);
 
         try {
             cursor.moveToFirst();
